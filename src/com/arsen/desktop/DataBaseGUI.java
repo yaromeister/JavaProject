@@ -174,6 +174,7 @@ public class DataBaseGUI {
         oldPanel.setVisible(false);
         newPanel.setVisible(true);
         frame.setSize(newPanel.getPreferredSize());
+        //typo
 
     }
 
