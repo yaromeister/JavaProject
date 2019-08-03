@@ -1,10 +1,16 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DataBaseGUI {
+
+    //Singleton
+    public static DataBaseGUI instance = new DataBaseGUI();
+
+
     // region MainMenuVariables
     private JButton addWorkerButton;
     private JPanel parentPanel;
@@ -16,6 +22,7 @@ public class DataBaseGUI {
     private JTextArea chooseAnOptionTextArea;
     //endregion
 
+    /*
     //region AddWorkerVariables
     private JPanel addWorkerPanel;
     private JTextArea workerIDText;
@@ -48,10 +55,12 @@ public class DataBaseGUI {
     private JButton submitAddButton;
     //endregion
 
-    Worker worker = new Worker();
+    */
 
-    JTextArea textAreas[] = {workerIDText, workerNameText, lastNameText, patronumText, birthDayText, workerJobText, placeOfWorkText, roomNumberText, phoneNumberText, emailText, salaryText, firstDayOnJobText, notesText};
-    JTextField textFields[] = {workerID, workerName,lastName,patronum,birthDay,workerJob,placeOfWork,roomNumber,phoneNumber, email, salary, firstDayOnJob, notes};
+   // Worker worker = new Worker();
+
+    //JTextArea textAreas[] = {workerIDText, workerNameText, lastNameText, patronumText, birthDayText, workerJobText, placeOfWorkText, roomNumberText, phoneNumberText, emailText, salaryText, firstDayOnJobText, notesText};
+   // JTextField textFields[] = {workerID, workerName,lastName,patronum,birthDay,workerJob,placeOfWork,roomNumber,phoneNumber, email, salary, firstDayOnJob, notes};
 
     private String question;
     private static JFrame frame = new JFrame("Application");
@@ -65,14 +74,20 @@ public class DataBaseGUI {
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION){
                     //JOptionPane.showMessageDialog(null,emailText.getText());
-                    VisibilityChange(mainPanel, addWorkerPanel);
+                    //VisibilityChange(mainPanel, form.addWorkerPanel);
+                    AddWorker();
+                    //JPanel cards = new JPanel(new CardLayout());
+                    //cards.add(addWorkerPanel, "Some Form");
+                    /*
                     submitAddButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             AddWorker();
-                            JOptionPane.showMessageDialog(null, worker.GetMapKeyValue(emailText.getText()));
+                            //JOptionPane.showMessageDialog(null, worker.GetMapKeyValue(emailText.getText()));
                         }
                     });
+
+                     */
 
 
                 }
@@ -128,10 +143,11 @@ public class DataBaseGUI {
 
     private void AddWorker()
     {
-
-        for(int i = 0; i<13; i++){
-            worker.SetMapKeyValue(textAreas[i].getText(), textFields[i].getText());
-        }
+        VisibilityChange(mainPanel, AddWorkerForm.instance.GetPanel());
+        frame.setContentPane(AddWorkerForm.instance.GetPanel());
+       // for(int i = 0; i<13; i++){
+           // worker.SetMapKeyValue(textAreas[i].getText(), textFields[i].getText());
+       // }
 
 
         //Use textArea.getText() for index creation 'cause it returns at least some value that looks like a key
@@ -169,7 +185,7 @@ public class DataBaseGUI {
 
     }
 
-    private void VisibilityChange(JPanel oldPanel, JPanel newPanel)
+    public static void VisibilityChange(JPanel oldPanel, JPanel newPanel)
     {
         oldPanel.setVisible(false);
         newPanel.setVisible(true);
@@ -177,10 +193,21 @@ public class DataBaseGUI {
         //multiclass change
     }
 
+    public static JFrame GetFrame(){
+        return frame;
+    }
+
+
+    public JPanel GetMainPanel(){
+        return mainPanel;
+    }
+
+
 
     public static void main(String[] args) {
-        frame.setContentPane(new DataBaseGUI().parentPanel);
+        frame.setContentPane(instance.parentPanel);
         frame.setLocation(500,50);
+       // frame.setLayout(new CardLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
