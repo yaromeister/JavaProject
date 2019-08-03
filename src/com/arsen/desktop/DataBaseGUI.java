@@ -1,7 +1,6 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,43 +21,6 @@ public class DataBaseGUI {
     private JTextArea chooseAnOptionTextArea;
     //endregion
 
-    /*
-    //region AddWorkerVariables
-    private JPanel addWorkerPanel;
-    private JTextArea workerIDText;
-    private JTextArea lastNameText;
-    private JTextArea workerNameText;
-    private JTextArea patronumText;
-    private JTextArea birthDayText;
-    private JTextArea workerJobText;
-    private JTextArea placeOfWorkText;
-    private JTextArea roomNumberText;
-    private JTextArea phoneNumberText;
-    private JTextArea emailText;
-    private JTextArea salaryText;
-    private JTextArea firstDayOnJobText;
-    private JTextArea notesText;
-    private JTextField workerID;
-    private JTextField lastName;
-    private JTextField workerName;
-    private JTextField patronum;
-    private JTextField birthDay;
-    private JTextField workerJob;
-    private JTextField placeOfWork;
-    private JTextField roomNumber;
-    private JTextField phoneNumber;
-    private JTextField email;
-    private JTextField salary;
-    private JTextField firstDayOnJob;
-    private JTextField notes;
-    private JTextArea Description;
-    private JButton submitAddButton;
-    //endregion
-
-    */
-
-   // Worker worker = new Worker();
-
     //JTextArea textAreas[] = {workerIDText, workerNameText, lastNameText, patronumText, birthDayText, workerJobText, placeOfWorkText, roomNumberText, phoneNumberText, emailText, salaryText, firstDayOnJobText, notesText};
    // JTextField textFields[] = {workerID, workerName,lastName,patronum,birthDay,workerJob,placeOfWork,roomNumber,phoneNumber, email, salary, firstDayOnJob, notes};
 
@@ -74,21 +36,8 @@ public class DataBaseGUI {
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION){
                     //JOptionPane.showMessageDialog(null,emailText.getText());
-                    //VisibilityChange(mainPanel, form.addWorkerPanel);
-                    AddWorker();
-                    //JPanel cards = new JPanel(new CardLayout());
-                    //cards.add(addWorkerPanel, "Some Form");
-                    /*
-                    submitAddButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            AddWorker();
-                            //JOptionPane.showMessageDialog(null, worker.GetMapKeyValue(emailText.getText()));
-                        }
-                    });
-
-                     */
-
+                    //ChangeVisibility(mainPanel, form.addWorkerPanel);
+                    OpenAddWorkerForm();
 
                 }
             }
@@ -100,7 +49,7 @@ public class DataBaseGUI {
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION){
                     JOptionPane.showMessageDialog(null,"Do something");
-                    ViewWorker();
+                    OpenViewWorkerForm();
                 }
             }
         });
@@ -111,7 +60,7 @@ public class DataBaseGUI {
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION){
                     JOptionPane.showMessageDialog(null,"Do something");
-                    EditWorker();
+                    OpenEditWorkerForm();
                 }
             }
         });
@@ -141,14 +90,10 @@ public class DataBaseGUI {
 
     }
 
-    private void AddWorker()
+    private void OpenAddWorkerForm()
     {
-        VisibilityChange(mainPanel, AddWorkerForm.instance.GetPanel());
+        ChangeVisibility(mainPanel, AddWorkerForm.instance.GetPanel());
         frame.setContentPane(AddWorkerForm.instance.GetPanel());
-       // for(int i = 0; i<13; i++){
-           // worker.SetMapKeyValue(textAreas[i].getText(), textFields[i].getText());
-       // }
-
 
         //Use textArea.getText() for index creation 'cause it returns at least some value that looks like a key
         //Add text fields to list or array
@@ -165,19 +110,21 @@ public class DataBaseGUI {
 
     }
 
-    private void ViewWorker()
+    private void OpenViewWorkerForm()
     {
-
+        ChangeVisibility(mainPanel, ViewWorkerForm.insctance.GetPanel());
+        frame.setContentPane(ViewWorkerForm.insctance.GetPanel());
     }
 
-    private void EditWorker()
+    private void OpenEditWorkerForm()
     {
 
     }
 
     private void DeleteWorker()
     {
-
+        //Ask if they want to review workers data first
+        //Double check for delete
     }
 
     private void PrintReport()
@@ -185,7 +132,7 @@ public class DataBaseGUI {
 
     }
 
-    public static void VisibilityChange(JPanel oldPanel, JPanel newPanel)
+    public static void ChangeVisibility(JPanel oldPanel, JPanel newPanel)
     {
         oldPanel.setVisible(false);
         newPanel.setVisible(true);
@@ -207,7 +154,6 @@ public class DataBaseGUI {
     public static void main(String[] args) {
         frame.setContentPane(instance.parentPanel);
         frame.setLocation(500,50);
-       // frame.setLayout(new CardLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
