@@ -4,11 +4,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ViewWorkerForm {
+public class ViewWorkerForm{
 
-    public static ViewWorkerForm insctance = new ViewWorkerForm();
+    public static ViewWorkerForm instance = new ViewWorkerForm();
 
     private JPanel viewWorkerPanel;
+
     private JTextArea workerIDText;
     private JTextArea lastNameText;
     private JTextArea workerNameText;
@@ -34,21 +35,34 @@ public class ViewWorkerForm {
     private JLabel roomNumberLabel;
     private JLabel phoneLabel;
     private JLabel emailLabel;
-    private JLabel salartLabel;
-    private JLabel workigngSinceLabel;
+    private JLabel salaryLabel;
+    private JLabel workingSinceLabel;
     private JLabel notesLabel;
+    private JButton deleteButton;
+
 
     public ViewWorkerForm(){
         Description.setText(AddWorkerForm.instance.getTextFieldByIndex(1).getText() + " " + AddWorkerForm.instance.getTextFieldByIndex(2).getText() + " info");
+
+        //Set all labels with SQL form database
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
                 DataBaseGUI.instance.ChangeVisibility(viewWorkerPanel, DataBaseGUI.instance.GetMainPanel());
                 DataBaseGUI.instance.GetFrame().setContentPane(DataBaseGUI.instance.GetMainPanel());
 
+
             }
         });
 
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,"Gocha, mate(:");
+                DataBaseGUI.instance.DeleteWorker(DataBaseGUI.instance.getOperationsWorkerID());
+            }
+        });
     }
 
     public JLabel GetLabel(){
@@ -57,6 +71,14 @@ public class ViewWorkerForm {
 
     public JPanel GetPanel(){
         return viewWorkerPanel;
+    }
+
+    public void setDeleteButtonVisible(Boolean bool){
+        deleteButton.setVisible(bool);
+    }
+
+    public void setTextLabels(String dataBaseKey){
+        //SQL command for retrieving data
     }
 }
 
