@@ -159,7 +159,7 @@
               <inheritsPopupMenu value="false"/>
               <lineWrap value="false"/>
               <margin top="0" left="100" bottom="0" right="0"/>
-              <text value="Date Of Birth"/>
+              <text value="Date Of Birth(yyyy-mm-dd)"/>
             </properties>
           </component>
           <component id="27a82" class="javax.swing.JTextField" binding="workerJob">
@@ -335,7 +335,7 @@
               <inheritsPopupMenu value="false"/>
               <lineWrap value="false"/>
               <margin top="0" left="100" bottom="0" right="0"/>
-              <text value="Working Since"/>
+              <text value="Working Since(yyyy-mm-dd)"/>
             </properties>
           </component>
           <component id="ef51f" class="javax.swing.JTextField" binding="notes">

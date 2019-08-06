@@ -1,12 +1,16 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
+import java.lang.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class AddWorkerForm {
 
     public static AddWorkerForm instance = new AddWorkerForm();
+
+
 
     //region Buttons and fields
     private JPanel addWorkerPanel;
@@ -54,6 +58,7 @@ public class AddWorkerForm {
                 //DataBaseGUI mainMenu = new DataBaseGUI();
                 DataBaseGUI.instance.ChangeVisibility(addWorkerPanel, DataBaseGUI.instance.GetMainPanel());
                 DataBaseGUI.instance.GetFrame().setContentPane(DataBaseGUI.instance.GetMainPanel());
+
                 for(int i =0; i<textFields.length; i++)
                 {
                     textFields[i].setText("");
@@ -64,11 +69,18 @@ public class AddWorkerForm {
         });
         submitAddButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {                        //Button to add worker
+            public void actionPerformed(ActionEvent e)  {                        //Button to add worker
                 //SQL command to add a new row to the table
-                ViewWorkerForm.instance.GetLabel().setText(textFields[0].getText());
+                DataBaseManager.addRowToTable(textFields);
+                //ViewWorkerForm.instance.GetLabel().setText(textFields[0].getText());
+
+
             }
         });
+    }
+
+    private void setPreparedStatement(){
+
     }
 
     public JPanel GetPanel()
