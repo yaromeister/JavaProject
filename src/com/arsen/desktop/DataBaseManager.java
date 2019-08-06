@@ -25,7 +25,8 @@ public class DataBaseManager {
 
     }
 
-    public static void addRowToTable(JTextField[] textFields){
+    public static void addRowToTable(JTextField[] textFields)
+    {
         Connection con = getConnection();
         try {
             DatabaseMetaData metaData = con.getMetaData();
@@ -82,6 +83,75 @@ public class DataBaseManager {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+
+    }
+
+    public static void deleteRowFromTheTable(String rowsID)
+    {
+        Connection conn = getConnection();
+        String sql = "DELETE FROM WORKERS " +
+                     "WHERE ID = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1,Integer.parseInt(rowsID));
+
+            preparedStatement.executeUpdate();
+
+            System.out.println("Successfully deleted");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Delete statement error!");
+        }
+    }
+
+    public static void viewRowFromTheTable(String rowID, JLabel[] labels)
+    {
+        Connection conn = getConnection();
+        String sql = "SELECT * FROM WORKERS " +
+                     "WHERE ID = ?";
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1,Integer.parseInt(rowID));
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+
+            if(resultSet.next())
+            {
+                for(int i =0; i<13; i++)
+                {
+                        String columnType = resultSet.getMetaData().getColumnTypeName(i + 1);
+
+                        switch (columnType)
+                        {
+                            case "INT":
+                                labels[i].setText(String.valueOf(resultSet.getInt(i + 1)));
+                                break;
+                            case "VARCHAR":
+                                labels[i].setText(resultSet.getString(i + 1));
+                                break;
+
+                            case "DATE":
+                                labels[i].setText(resultSet.getDate(i + 1).toString());
+                                break;
+
+                            case "DOUBLE":
+                                labels[i].setText(String.valueOf(resultSet.getDouble(i + 1)));
+                                break;
+                            default:
+                                System.out.println("Type error");
+                        }
+                    }
+
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 }

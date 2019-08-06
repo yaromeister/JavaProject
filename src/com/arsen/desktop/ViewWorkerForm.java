@@ -10,6 +10,7 @@ public class ViewWorkerForm{
 
     private JPanel viewWorkerPanel;
 
+    //region Buttons and labels
     private JTextArea workerIDText;
     private JTextArea lastNameText;
     private JTextArea workerNameText;
@@ -39,12 +40,15 @@ public class ViewWorkerForm{
     private JLabel workingSinceLabel;
     private JLabel notesLabel;
     private JButton deleteButton;
+    //endregion
 
+    private JLabel[] labels = {workerIDLabel, lastNameLabel, nameLabel,
+            patronumLabel, dateOfBirthLabel, jobLabel, placeOfWorkLabel,
+            roomNumberLabel, phoneLabel, emailLabel, salaryLabel, workingSinceLabel, notesLabel};
 
     public ViewWorkerForm(){
         Description.setText(AddWorkerForm.instance.getTextFieldByIndex(1).getText() + " " + AddWorkerForm.instance.getTextFieldByIndex(2).getText() + " info");
 
-        //Set all labels with SQL form database
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -65,8 +69,8 @@ public class ViewWorkerForm{
         });
     }
 
-    public JLabel GetLabel(){
-        return workerIDLabel;
+    public JLabel[] GetLabelArray(){
+        return labels;
     }
 
     public JPanel GetPanel(){

@@ -168,11 +168,17 @@ public class DataBaseGUI {
 
     public void DeleteWorker(String deleteID){
         //Call SQL command to delete a row with operationsWorkerID
+        DataBaseManager.deleteRowFromTheTable(deleteID);
+
     }
 
     private void OpenViewWorkerForm(String viewID){
         ViewWorkerForm.instance.setDeleteButtonVisible(false);
         ViewWorkerForm.instance.setTextLabels(viewID);
+
+        //Set all labels with SQL form database
+        DataBaseManager.viewRowFromTheTable(viewID,ViewWorkerForm.instance.GetLabelArray());
+
 
         ChangeVisibility(mainPanel, ViewWorkerForm.instance.GetPanel());
         frame.setContentPane(ViewWorkerForm.instance.GetPanel());
