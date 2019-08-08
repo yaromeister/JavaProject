@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.arsen.desktop.EditWorkerForm">
-  <grid id="27dc6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+  <grid id="27dc6" binding="parentPanel" layout-manager="CardLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="654" height="704"/>
+      <xy x="20" y="20" width="650" height="700"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="f706a" binding="editWorkerPanel" layout-manager="GridLayoutManager" row-count="16" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="91333" binding="editWorkerPanel" layout-manager="GridLayoutManager" row-count="16" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="15" left="30" bottom="15" right="30"/>
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <card name="Card1"/>
         </constraints>
         <properties>
           <background color="-1"/>
           <foreground color="-1"/>
           <minimumSize width="650" height="700"/>
-          <preferredSize width="650" height="700"/>
+          <preferredSize width="700" height="720"/>
           <visible value="true"/>
         </properties>
         <border type="none"/>
         <children>
-          <component id="a46c1" class="javax.swing.JTextArea" binding="workerIDText">
+          <component id="c7625" class="javax.swing.JTextArea" binding="workerIDText">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -42,23 +41,7 @@
               <text value="Worker ID"/>
             </properties>
           </component>
-          <component id="4dda4" class="javax.swing.JTextField" binding="workerID">
-            <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="cea71" class="javax.swing.JTextField" binding="lastName">
-            <constraints>
-              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="59dff" class="javax.swing.JTextArea" binding="lastNameText">
+          <component id="bf3bc" class="javax.swing.JTextArea" binding="lastNameText">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -78,15 +61,7 @@
               <text value="Last Name"/>
             </properties>
           </component>
-          <component id="15af3" class="javax.swing.JTextField" binding="workerName">
-            <constraints>
-              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="be940" class="javax.swing.JTextArea" binding="workerNameText">
+          <component id="cacb5" class="javax.swing.JTextArea" binding="workerNameText">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -106,15 +81,7 @@
               <text value="Name"/>
             </properties>
           </component>
-          <component id="fbe35" class="javax.swing.JTextField" binding="patronum">
-            <constraints>
-              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="fce7e" class="javax.swing.JTextArea" binding="patronumText">
+          <component id="37ff0" class="javax.swing.JTextArea" binding="patronumText">
             <constraints>
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -134,15 +101,7 @@
               <text value="Patronum"/>
             </properties>
           </component>
-          <component id="f42bb" class="javax.swing.JTextField" binding="birthDay">
-            <constraints>
-              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="90028" class="javax.swing.JTextArea" binding="birthDayText">
+          <component id="b26c6" class="javax.swing.JTextArea" binding="birthDayText">
             <constraints>
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -162,15 +121,7 @@
               <text value="Date Of Birth"/>
             </properties>
           </component>
-          <component id="a4875" class="javax.swing.JTextField" binding="workerJob">
-            <constraints>
-              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="d0418" class="javax.swing.JTextArea" binding="workerJobText">
+          <component id="d0de8" class="javax.swing.JTextArea" binding="workerJobText">
             <constraints>
               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -190,23 +141,7 @@
               <text value="Job"/>
             </properties>
           </component>
-          <component id="92a67" class="javax.swing.JTextField" binding="placeOfWork">
-            <constraints>
-              <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="2be85" class="javax.swing.JTextField" binding="roomNumber">
-            <constraints>
-              <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="e00df" class="javax.swing.JTextArea" binding="roomNumberText">
+          <component id="aa1db" class="javax.swing.JTextArea" binding="roomNumberText">
             <constraints>
               <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -226,15 +161,7 @@
               <text value="Room Number"/>
             </properties>
           </component>
-          <component id="eed15" class="javax.swing.JTextField" binding="phoneNumber">
-            <constraints>
-              <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="545d6" class="javax.swing.JTextArea" binding="phoneNumberText">
+          <component id="925e0" class="javax.swing.JTextArea" binding="phoneNumberText">
             <constraints>
               <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -254,15 +181,7 @@
               <text value="Phone"/>
             </properties>
           </component>
-          <component id="ce5b1" class="javax.swing.JTextField" binding="email">
-            <constraints>
-              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="59154" class="javax.swing.JTextArea" binding="emailText">
+          <component id="c5129" class="javax.swing.JTextArea" binding="emailText">
             <constraints>
               <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -282,15 +201,7 @@
               <text value="Email"/>
             </properties>
           </component>
-          <component id="58f9a" class="javax.swing.JTextField" binding="salary">
-            <constraints>
-              <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="50e03" class="javax.swing.JTextArea" binding="salaryText">
+          <component id="3ba6f" class="javax.swing.JTextArea" binding="salaryText">
             <constraints>
               <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -310,15 +221,7 @@
               <text value="Salary"/>
             </properties>
           </component>
-          <component id="6182a" class="javax.swing.JTextField" binding="workingSince">
-            <constraints>
-              <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="972b3" class="javax.swing.JTextArea" binding="workingSinceText">
+          <component id="94363" class="javax.swing.JTextArea" binding="workingSinceText">
             <constraints>
               <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -338,15 +241,7 @@
               <text value="Working Since"/>
             </properties>
           </component>
-          <component id="69c11" class="javax.swing.JTextField" binding="notes">
-            <constraints>
-              <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="920a0" class="javax.swing.JTextArea" binding="notesText">
+          <component id="ab776" class="javax.swing.JTextArea" binding="notesText">
             <constraints>
               <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -366,7 +261,7 @@
               <text value="Notes"/>
             </properties>
           </component>
-          <component id="d6536" class="javax.swing.JTextArea" binding="placeOfWorkText">
+          <component id="65eb6" class="javax.swing.JTextArea" binding="placeOfWorkText">
             <constraints>
               <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="120" height="30"/>
@@ -386,7 +281,7 @@
               <text value="Place Of Work"/>
             </properties>
           </component>
-          <component id="5a33e" class="javax.swing.JButton" binding="editButton">
+          <component id="f5b9" class="javax.swing.JButton" binding="editButton">
             <constraints>
               <grid row="15" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -397,7 +292,7 @@
               <text value="Edit"/>
             </properties>
           </component>
-          <component id="83954" class="javax.swing.JTextArea" binding="Description">
+          <component id="e00cd" class="javax.swing.JTextArea" binding="Description">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="10" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="50"/>
@@ -411,7 +306,7 @@
               <text value="Input data and submit"/>
             </properties>
           </component>
-          <component id="399d1" class="javax.swing.JButton" binding="backButton">
+          <component id="e554f" class="javax.swing.JButton" binding="backButton">
             <constraints>
               <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -422,13 +317,143 @@
               <text value="Back"/>
             </properties>
           </component>
-          <vspacer id="d8956">
+          <vspacer id="69f22">
             <constraints>
               <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
                 <preferred-size width="-1" height="20"/>
               </grid>
             </constraints>
           </vspacer>
+          <component id="eb686" class="javax.swing.JFormattedTextField" binding="workerID">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="6983e" class="javax.swing.JFormattedTextField" binding="lastName">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="53f63" class="javax.swing.JFormattedTextField" binding="name">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="16b2b" class="javax.swing.JFormattedTextField" binding="patronum">
+            <constraints>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="116ac" class="javax.swing.JFormattedTextField" binding="dateOfBirth">
+            <constraints>
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="6366" class="javax.swing.JFormattedTextField" binding="job">
+            <constraints>
+              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="4053c" class="javax.swing.JFormattedTextField" binding="placeOfWork">
+            <constraints>
+              <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="d0337" class="javax.swing.JFormattedTextField" binding="roomNumber">
+            <constraints>
+              <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="45ce5" class="javax.swing.JFormattedTextField" binding="phone">
+            <constraints>
+              <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="a8a79" class="javax.swing.JFormattedTextField" binding="email">
+            <constraints>
+              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="8f777" class="javax.swing.JFormattedTextField" binding="salary">
+            <constraints>
+              <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="a4146" class="javax.swing.JFormattedTextField" binding="workingSince">
+            <constraints>
+              <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="c9dde" class="javax.swing.JFormattedTextField" binding="notes">
+            <constraints>
+              <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>

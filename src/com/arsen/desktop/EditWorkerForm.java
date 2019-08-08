@@ -11,41 +11,42 @@ public class EditWorkerForm {
 
     private JPanel editWorkerPanel;
     private JTextArea workerIDText;
-    private JTextField workerID;
-    private JTextField lastName;
     private JTextArea lastNameText;
-    private JTextField workerName;
     private JTextArea workerNameText;
-    private JTextField patronum;
     private JTextArea patronumText;
-    private JTextField birthDay;
     private JTextArea birthDayText;
-    private JTextField workerJob;
     private JTextArea workerJobText;
-    private JTextField placeOfWork;
-    private JTextField roomNumber;
     private JTextArea roomNumberText;
-    private JTextField phoneNumber;
     private JTextArea phoneNumberText;
-    private JTextField email;
     private JTextArea emailText;
-    private JTextField salary;
     private JTextArea salaryText;
-    private JTextField workingSince;
     private JTextArea workingSinceText;
-    private JTextField notes;
     private JTextArea notesText;
     private JTextArea placeOfWorkText;
     private JButton editButton;
-    private JTextArea Description;
     private JButton backButton;
+    private JPanel parentPanel;
+    private JTextArea Description;
+    private JFormattedTextField workerID;
+    private JFormattedTextField lastName;
+    private JFormattedTextField name;
+    private JFormattedTextField patronum;
+    private JFormattedTextField dateOfBirth;
+    private JFormattedTextField job;
+    private JFormattedTextField placeOfWork;
+    private JFormattedTextField roomNumber;
+    private JFormattedTextField phone;
+    private JFormattedTextField email;
+    private JFormattedTextField salary;
+    private JFormattedTextField workingSince;
+    private JFormattedTextField notes;
 
     private JTextArea[] textAreas = {workerIDText, lastNameText, workerNameText, patronumText, birthDayText, workerJobText, placeOfWorkText, roomNumberText, phoneNumberText, emailText, salaryText, workingSinceText, notesText};
-    private JTextField[] textFields = {workerID, lastName,workerName, patronum,birthDay,workerJob,placeOfWork,roomNumber,phoneNumber, email, salary, workingSince, notes};
+    private JFormattedTextField[] formattedTextFieldsFields = {workerID, lastName,name, patronum,dateOfBirth,job,placeOfWork,roomNumber,phone, email, salary, workingSince, notes};
 
 
     public EditWorkerForm(){
-        textFields[7].setText("Some Text");
+        formattedTextFieldsFields[7].setText("Some Text");
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -53,9 +54,9 @@ public class EditWorkerForm {
                 //DataBaseGUI mainMenu = new DataBaseGUI();
                 DataBaseGUI.instance.ChangeVisibility(editWorkerPanel, DataBaseGUI.instance.GetMainPanel());
                 DataBaseGUI.instance.GetFrame().setContentPane(DataBaseGUI.instance.GetMainPanel());
-                for(int i =0; i<textFields.length; i++)
+                for(int i =0; i<formattedTextFieldsFields.length; i++)
                 {
-                    textFields[i].setText("");
+                    formattedTextFieldsFields[i].setText("");
                 }
                 //JOptionPane.showMessageDialog(null, textFields[9].getText());
 
@@ -66,6 +67,7 @@ public class EditWorkerForm {
             public void actionPerformed(ActionEvent e) {
                 //Alter workers info in data base
                 //Take info from textFields, ID from inputID
+                DataBaseManager.editRowInTheTable(formattedTextFieldsFields,DataBaseGUI.instance.getOperationsWorkerID());
             }
         });
     }
@@ -74,8 +76,9 @@ public class EditWorkerForm {
         return editWorkerPanel;
     }
 
-    public void setTextFields(String dataBaseKey)
-    {
-        //SQL command for retrieving data
+    public JFormattedTextField[] getFormattedFields(){
+        return formattedTextFieldsFields;
     }
+
+
 }

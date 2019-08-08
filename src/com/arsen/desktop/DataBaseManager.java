@@ -2,6 +2,7 @@ package com.arsen.desktop;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.Calendar;
 
 
 public class DataBaseManager {
@@ -12,6 +13,9 @@ public class DataBaseManager {
     //  Database credentials
     private static final String USER = "root";
     private static final String PASS = "admin";
+
+    Calendar cal = Calendar.getInstance();
+
 
     private static Connection getConnection(){
         try {
@@ -35,14 +39,15 @@ public class DataBaseManager {
             String sql = "INSERT INTO `WORKERS` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
 
+
             int i = 0;
             while (resultSet.next()){
                 String type = resultSet.getString("TYPE_NAME");
-                //System.out.println(type);
+                System.out.println(resultSet.getString("COLUMN_NAME"));
 
                 switch(type){
                     case "INT":
-                        preparedStatement.setInt(i+1, Integer.parseInt(textFields[i].getText()));
+                        preparedStatement.setInt(i+1, Integer.parseInt(textFields[i].getText().replaceAll("\\s+","")));
                     break;
 
                     case "VARCHAR":
@@ -117,7 +122,6 @@ public class DataBaseManager {
             preparedStatement.setInt(1,Integer.parseInt(rowID));
             ResultSet resultSet = preparedStatement.executeQuery();
 
-
             if(resultSet.next())
             {
                 for(int i =0; i<13; i++)
@@ -132,11 +136,9 @@ public class DataBaseManager {
                             case "VARCHAR":
                                 labels[i].setText(resultSet.getString(i + 1));
                                 break;
-
                             case "DATE":
                                 labels[i].setText(resultSet.getDate(i + 1).toString());
                                 break;
-
                             case "DOUBLE":
                                 labels[i].setText(String.valueOf(resultSet.getDouble(i + 1)));
                                 break;
@@ -144,14 +146,114 @@ public class DataBaseManager {
                                 System.out.println("Type error");
                         }
                     }
-
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static void viewRowFromTheTable(String rowID, JFormattedTextField[] formattedTextFields)
+    {
+        Connection conn = getConnection();
+        String sql = "SELECT * FROM WORKERS " +
+                "WHERE ID = ?";
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1,Integer.parseInt(rowID));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            formattedTextFields[0].setEditable(false);
+
+            if(resultSet.next())
+            {
+                for(int i =0; i<13; i++)
+                {
+                    String columnType = resultSet.getMetaData().getColumnTypeName(i + 1);
+
+                    switch (columnType)
+                    {
+                        case "INT":
+                            formattedTextFields[i].setText(String.valueOf(resultSet.getInt(i + 1)));
+                            break;
+                        case "VARCHAR":
+                            formattedTextFields[i].setText(resultSet.getString(i + 1));
+                            break;
+                        case "DATE":
+                            formattedTextFields[i].setText(resultSet.getDate(i + 1).toString());
+                            break;
+                        case "DOUBLE":
+                            formattedTextFields[i].setText(String.valueOf(resultSet.getDouble(i + 1)));
+                            break;
+                        default:
+                            System.out.println("Type error");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editRowInTheTable(JFormattedTextField[] formattedTextFields, String editID){
+        Connection con = getConnection();
+        try {
+            DatabaseMetaData metaData = con.getMetaData();
+            ResultSet resultSet = metaData.getColumns(null, null, "workers", null);
+
+            String sql = "UPDATE `WORKERS` " +
+                         "SET `Last Name` = ?, `Name` = ?, `Patronum` = ?, `Date of birth` = ?, `Job` = ?, `Department` = ?, `Room number` = ?, `Phone number` = ?, `Email` = ?, `Salary` = ?, `Working since` = ?, `Notes` = ? WHERE ID = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+            int i = 1;
+            resultSet.next();
+            while (resultSet.next()){
+                String type = resultSet.getString("TYPE_NAME");
+               // preparedStatement.setString(j-1, "`"+resultSet.getString("COLUMN_NAME")+"`");
+               System.out.println(i + " " + "`"+resultSet.getString("COLUMN_NAME")+"`");
+
+                switch(type){
+                    case "INT":
+                        preparedStatement.setInt(i, Integer.parseInt(formattedTextFields[i].getText().replaceAll("\\s+","")));
+                        break;
+
+                    case "VARCHAR":
+                        preparedStatement.setString(i, formattedTextFields[i].getText());
+                        break;
+
+                    case"DATE":
+                        preparedStatement.setDate(i, Date.valueOf(formattedTextFields[i].getText()));
+
+                        break;
+
+                    case"DOUBLE":
+                        preparedStatement.setDouble(i, Double.parseDouble(formattedTextFields[i].getText()));
+                        break;
+                    default:
+                        System.out.println("Type error");
+                }
+                i++;
+                //System.out.println(j);
+            }
+            preparedStatement.setInt(i, Integer.parseInt(editID));
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static ResultSet getColumnTypes() throws SQLException
+    {
+        Connection con = getConnection();
+        DatabaseMetaData metaData = con.getMetaData();
+        ResultSet resultSet = metaData.getColumns(null, null, "workers", null);
+
+        return resultSet;
 
 
     }
+
+
 }

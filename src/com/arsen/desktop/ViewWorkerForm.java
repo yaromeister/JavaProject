@@ -10,20 +10,7 @@ public class ViewWorkerForm{
 
     private JPanel viewWorkerPanel;
 
-    //region Buttons and labels
-    private JTextArea workerIDText;
-    private JTextArea lastNameText;
-    private JTextArea workerNameText;
-    private JTextArea patronumText;
-    private JTextArea birthDayText;
-    private JTextArea workerJobText;
-    private JTextArea roomNumberText;
-    private JTextArea phoneNumberText;
-    private JTextArea emailText;
-    private JTextArea salaryText;
-    private JTextArea firstDayOnJobText;
-    private JTextArea notesText;
-    private JTextArea placeOfWorkText;
+    //region Button And Fields
     private JTextArea Description;
     private JButton backButton;
     private JLabel workerIDLabel;
@@ -40,7 +27,21 @@ public class ViewWorkerForm{
     private JLabel workingSinceLabel;
     private JLabel notesLabel;
     private JButton deleteButton;
+    private JTextArea workerIDText;
+    private JTextArea lastNameText;
+    private JTextArea workerNameText;
+    private JTextArea patronumText;
+    private JTextArea birthDayText;
+    private JTextArea workerJobText;
+    private JTextArea roomNumberText;
+    private JTextArea phoneNumberText;
+    private JTextArea emailText;
+    private JTextArea salaryText;
+    private JTextArea firstDayOnJobText;
+    private JTextArea notesText;
+    private JTextArea placeOfWorkText;
     //endregion
+
 
     private JLabel[] labels = {workerIDLabel, lastNameLabel, nameLabel,
             patronumLabel, dateOfBirthLabel, jobLabel, placeOfWorkLabel,

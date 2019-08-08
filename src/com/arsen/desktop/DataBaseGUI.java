@@ -1,8 +1,10 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class DataBaseGUI {
 
@@ -92,19 +94,11 @@ public class DataBaseGUI {
     {
         ChangeVisibility(mainPanel, AddWorkerForm.instance.GetPanel());
         frame.setContentPane(AddWorkerForm.instance.GetPanel());
-
-        //Use textArea.getText() for index creation 'cause it returns at least some value that looks like a key
-        //Add text fields to list or array
-        //Set values using a loop
-        /*
-        SetAllNewValues(ListOfTextFields)
-        {
-            for(int i = 0; i<ListOfTextFields.Length && i < HashTable.Lenght; i++)
-            {
-                SetValue(i(like index of a HashTable),ListOfTextFields[i].getText());
-            }
+        try {
+            AddWorkerForm.instance.SetMaskFormatters(AddWorkerForm.instance.getFormattedTextFields());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-         */
 
     }
 
@@ -130,7 +124,13 @@ public class DataBaseGUI {
             ChangeVisibility(mainPanel, EditWorkerForm.instance.GetPanel());
             frame.setContentPane(EditWorkerForm.instance.GetPanel());
 
-            EditWorkerForm.instance.setTextFields(operationsWorkerID);
+            try {
+                AddWorkerForm.instance.SetMaskFormatters(EditWorkerForm.instance.getFormattedFields());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            DataBaseManager.viewRowFromTheTable(operationsWorkerID,EditWorkerForm.instance.getFormattedFields());
+            //EditWorkerForm.instance.setTextFields(operationsWorkerID);
         }
     }
 
