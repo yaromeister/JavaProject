@@ -79,17 +79,8 @@ public class AddWorkerForm {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
-                //DataBaseGUI mainMenu = new DataBaseGUI();
                 DataBaseGUI.instance.ChangeVisibility(addWorkerPanel, DataBaseGUI.instance.GetMainPanel());
                 DataBaseGUI.instance.GetFrame().setContentPane(DataBaseGUI.instance.GetMainPanel());
-                /*
-                for(int i =0; i<textFields.length; i++)
-                {
-                    textFields[i].setText("");
-                }
-
-                 */
-                //JOptionPane.showMessageDialog(null, textFields[9].getText());
 
             }
         });
@@ -98,9 +89,6 @@ public class AddWorkerForm {
             public void actionPerformed(ActionEvent e)  {                        //Button to add worker
                 //SQL command to add a new row to the table
                 DataBaseManager.addRowToTable(formattedTextFields);
-                //ViewWorkerForm.instance.GetLabel().setText(textFields[0].getText());
-
-
             }
         });
     }
@@ -112,60 +100,6 @@ public class AddWorkerForm {
 
     public JFormattedTextField getTextFieldByIndex(int index){
         return formattedTextFields[index];
-    }
-
-
-
-    private MaskFormatter maskFormatter(String s){
-        MaskFormatter formatter = null;
-        try {
-            formatter = new MaskFormatter(s);
-            //formatter.setPlaceholderCharacter('*');
-            //formatter.setValidCharacters("012345");
-            //formatter.setPlaceholderCharacter('_');
-        } catch (java.text.ParseException exc) {
-            System.err.println("formatter is bad: " + exc.getMessage());
-            System.exit(-1);
-        }
-        return formatter;
-    }
-
-
-    public void SetMaskFormatters(JFormattedTextField[] formattedTextFields) throws SQLException {
-
-        ResultSet resultSet = DataBaseManager.getColumnTypes();
-        int i = 0;
-            while (resultSet.next())
-            {
-                String type = resultSet.getString("TYPE_NAME");
-                //System.out.println(type);
-
-
-                switch(type){
-                    case "INT":
-                        formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter("####")));
-                        formattedTextFields[i].setText("8888");
-                        break;
-                    case "VARCHAR":
-                        MaskFormatter stringFormatter = maskFormatter("****************");
-                        stringFormatter.setInvalidCharacters("123456789");
-                        formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(stringFormatter));
-                        formattedTextFields[i].setText("xxxxxxxxxxxxx");
-                        break;
-
-                    case"DATE":
-                        formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter("####-##-##")));
-                        formattedTextFields[i].setText("1111-11-11");
-                        break;
-                    case"DOUBLE":
-                        formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter("##########")));
-                        formattedTextFields[i].setText("8888");
-                        break;
-                    default:
-                        System.out.println("Type error");
-                }
-                i++;
-            }
     }
 
     public JFormattedTextField[] getFormattedTextFields(){

@@ -95,7 +95,7 @@ public class DataBaseGUI {
         ChangeVisibility(mainPanel, AddWorkerForm.instance.GetPanel());
         frame.setContentPane(AddWorkerForm.instance.GetPanel());
         try {
-            AddWorkerForm.instance.SetMaskFormatters(AddWorkerForm.instance.getFormattedTextFields());
+            DataBaseManager.SetMaskFormatters(AddWorkerForm.instance.getFormattedTextFields());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -121,16 +121,15 @@ public class DataBaseGUI {
 
         if(operationsWorkerID != null) {
             //Check if there is such an ID
-            ChangeVisibility(mainPanel, EditWorkerForm.instance.GetPanel());
-            frame.setContentPane(EditWorkerForm.instance.GetPanel());
-
             try {
-                AddWorkerForm.instance.SetMaskFormatters(EditWorkerForm.instance.getFormattedFields());
+                DataBaseManager.SetMaskFormatters(EditWorkerForm.instance.getFormattedFields());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             DataBaseManager.viewRowFromTheTable(operationsWorkerID,EditWorkerForm.instance.getFormattedFields());
-            //EditWorkerForm.instance.setTextFields(operationsWorkerID);
+
+            ChangeVisibility(mainPanel, EditWorkerForm.instance.GetPanel());
+            frame.setContentPane(EditWorkerForm.instance.GetPanel());
         }
     }
 
@@ -155,7 +154,9 @@ public class DataBaseGUI {
 
     private void PrintReport()
     {
-
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnValue = fc.showDialog(mainPanel,"Save here");
     }
 
     public static void ChangeVisibility(JPanel oldPanel, JPanel newPanel)

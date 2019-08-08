@@ -1,8 +1,9 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import java.sql.*;
-import java.util.Calendar;
 
 
 public class DataBaseManager {
@@ -14,7 +15,8 @@ public class DataBaseManager {
     private static final String USER = "root";
     private static final String PASS = "admin";
 
-    Calendar cal = Calendar.getInstance();
+    // Day lenght in miliseconds, for fixing ResultSet.getDate() bug
+    private static long day = 86400000;
 
 
     private static Connection getConnection(){
@@ -87,6 +89,7 @@ public class DataBaseManager {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Input data correctly");
         }
 
     }
@@ -105,8 +108,8 @@ public class DataBaseManager {
 
             System.out.println("Successfully deleted");
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Delete statement error!");
+            e.printStackTrace();
         }
     }
 
@@ -137,7 +140,9 @@ public class DataBaseManager {
                                 labels[i].setText(resultSet.getString(i + 1));
                                 break;
                             case "DATE":
-                                labels[i].setText(resultSet.getDate(i + 1).toString());
+                                Date currentDate = resultSet.getDate(i + 1);
+                                currentDate.setTime(currentDate.getTime()+day);
+                                labels[i].setText(currentDate.toString());
                                 break;
                             case "DOUBLE":
                                 labels[i].setText(String.valueOf(resultSet.getDouble(i + 1)));
@@ -147,6 +152,7 @@ public class DataBaseManager {
                         }
                     }
             }
+            ViewWorkerForm.instance.setDescription(labels[2].getText().replaceAll("\\s+",""), labels[1].getText().replaceAll("\\s+", ""));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -157,7 +163,7 @@ public class DataBaseManager {
     {
         Connection conn = getConnection();
         String sql = "SELECT * FROM WORKERS " +
-                "WHERE ID = ?";
+                     "WHERE ID = ?";
 
         PreparedStatement preparedStatement = null;
         try {
@@ -181,10 +187,13 @@ public class DataBaseManager {
                             formattedTextFields[i].setText(resultSet.getString(i + 1));
                             break;
                         case "DATE":
-                            formattedTextFields[i].setText(resultSet.getDate(i + 1).toString());
+                            Date currentDate = resultSet.getDate(i + 1);
+                            currentDate.setTime(currentDate.getTime()+day);
+                            formattedTextFields[i].setText(currentDate.toString());
                             break;
                         case "DOUBLE":
                             formattedTextFields[i].setText(String.valueOf(resultSet.getDouble(i + 1)));
+                            System.out.println(String.valueOf(resultSet.getDouble(i + 1)));
                             break;
                         default:
                             System.out.println("Type error");
@@ -240,6 +249,8 @@ public class DataBaseManager {
             preparedStatement.executeUpdate();
 
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Input data correctly");
+            System.out.println("Input data correctly");
             ex.printStackTrace();
         }
     }
@@ -255,5 +266,59 @@ public class DataBaseManager {
 
     }
 
+
+    private static MaskFormatter maskFormatter(String s){
+        MaskFormatter formatter = null;
+        try {
+            formatter = new MaskFormatter(s);
+        } catch (java.text.ParseException exc) {
+            System.err.println("formatter is bad: " + exc.getMessage());
+            System.exit(-1);
+        }
+        return formatter;
+    }
+
+
+    public static void SetMaskFormatters(JFormattedTextField[] formattedTextFields) throws SQLException {
+        //String.repeat(int number of repeats of String)        Done
+        ResultSet resultSet = getColumnTypes();
+        int i = 0;
+        while (resultSet.next())
+        {
+            String type = resultSet.getString("TYPE_NAME");
+            int columnSize = Integer.parseInt(resultSet.getString("COLUMN_SIZE"));
+            //System.out.println(columnSize);
+            String maskFormat;
+
+            switch(type){
+                case "INT":
+                    maskFormat = "#";
+                    formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
+                    formattedTextFields[i].setText("8888");
+                    break;
+                case "VARCHAR":
+                    maskFormat = "*";
+                    //stringFormatter.setInvalidCharacters("123456789");
+                    formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
+                    formattedTextFields[i].setText("xxxxxxxxxxxxx");
+                    break;
+
+                case"DATE":
+                    formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter("####-##-##")));
+                    formattedTextFields[i].setText("1111-11-11");
+                    break;
+                case"DOUBLE":
+                    maskFormat = "*";
+                    MaskFormatter doubleFormatter = maskFormatter(maskFormat.repeat(columnSize));
+                    doubleFormatter.setValidCharacters("0123456789.");
+                    formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(doubleFormatter));
+                    formattedTextFields[i].setText("8888.88");
+                    break;
+                default:
+                    System.out.println("Type error");
+            }
+            i++;
+        }
+    }
 
 }

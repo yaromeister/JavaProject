@@ -46,7 +46,6 @@ public class EditWorkerForm {
 
 
     public EditWorkerForm(){
-        formattedTextFieldsFields[7].setText("Some Text");
 
         backButton.addActionListener(new ActionListener() {
             @Override

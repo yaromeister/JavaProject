@@ -48,7 +48,7 @@ public class ViewWorkerForm{
             roomNumberLabel, phoneLabel, emailLabel, salaryLabel, workingSinceLabel, notesLabel};
 
     public ViewWorkerForm(){
-        Description.setText(AddWorkerForm.instance.getTextFieldByIndex(1).getText() + " " + AddWorkerForm.instance.getTextFieldByIndex(2).getText() + " info");
+        //Description.setText(AddWorkerForm.instance.getTextFieldByIndex(1).getText() + " " + AddWorkerForm.instance.getTextFieldByIndex(2).getText() + " info");
 
 
         backButton.addActionListener(new ActionListener() {
@@ -84,6 +84,10 @@ public class ViewWorkerForm{
 
     public void setTextLabels(String dataBaseKey){
         //SQL command for retrieving data
+    }
+
+    public void setDescription(String name, String lastName){
+        Description.setText(name +" " + lastName + " info");
     }
 }
 
