@@ -63,7 +63,7 @@ public class DataBaseGUI {
                 question = "Do you really want to edit Worker's info?";
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    OpenEditWorkerForm();
+                    OpenEditWorkerFormDialog();
                 }
             }
         });
@@ -86,7 +86,6 @@ public class DataBaseGUI {
                 question = "Do you really want to print a Report?";
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    JOptionPane.showMessageDialog(null,"Do something");
                     PrintReport();
                 }
             }
@@ -96,13 +95,13 @@ public class DataBaseGUI {
 
     private void OpenAddWorkerForm()
     {
-        ChangeVisibility(mainPanel, AddWorkerForm.instance.GetPanel());
-        frame.setContentPane(AddWorkerForm.instance.GetPanel());
         try {
             DataBaseManager.SetMaskFormatters(AddWorkerForm.instance.getFormattedTextFields());
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        ChangeVisibility(mainPanel, AddWorkerForm.instance.GetPanel());
+        frame.setContentPane(AddWorkerForm.instance.GetPanel());
 
     }
 
@@ -112,29 +111,60 @@ public class DataBaseGUI {
 
         if(operationsWorkerID != null)
         {
-            //Check if there is such ID in database
-            OpenViewWorkerForm(operationsWorkerID);
-        }
+            if(DataBaseManager.checkIfIDExists(operationsWorkerID))
+            {
+                OpenViewWorkerForm(operationsWorkerID);
+            }else
+                {
+                    while (!DataBaseManager.checkIfIDExists(operationsWorkerID)) {
+                        //Check if there is such ID in database
+                        operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
+                        if(operationsWorkerID == null)
+                            return;
+                    }
+                    OpenViewWorkerForm(operationsWorkerID);
 
+                }
+
+        }
 
     }
 
-    private void OpenEditWorkerForm()
+    private void OpenEditWorkerFormDialog()
     {
         operationsWorkerID = JOptionPane.showInputDialog(null,"Input ID of the worker you want to edit");
 
         if(operationsWorkerID != null) {
             //Check if there is such an ID
-            try {
-                DataBaseManager.SetMaskFormatters(EditWorkerForm.instance.getFormattedFields());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            DataBaseManager.viewRowFromTheTable(operationsWorkerID,EditWorkerForm.instance.getFormattedFields());
+            if(DataBaseManager.checkIfIDExists(operationsWorkerID))
+            {
+                openEditWorkerForm(operationsWorkerID);
+            }else
+            {
+                while (!DataBaseManager.checkIfIDExists(operationsWorkerID)) {
+                    //Check if there is such ID in database
+                    operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
+                    if(operationsWorkerID == null)
+                        return;
+                }
 
-            ChangeVisibility(mainPanel, EditWorkerForm.instance.GetPanel());
-            frame.setContentPane(EditWorkerForm.instance.GetPanel());
+                openEditWorkerForm(operationsWorkerID);
+
+            }
+
         }
+    }
+
+    private void openEditWorkerForm(String operationsWorkerID){
+        try {
+            DataBaseManager.SetMaskFormatters(EditWorkerForm.instance.getFormattedFields());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DataBaseManager.viewRowFromTheTable(operationsWorkerID,EditWorkerForm.instance.getFormattedFields());
+
+        ChangeVisibility(mainPanel, EditWorkerForm.instance.GetPanel());
+        frame.setContentPane(EditWorkerForm.instance.GetPanel());
     }
 
     private void DeleteWorkerDialog()
@@ -142,14 +172,20 @@ public class DataBaseGUI {
         operationsWorkerID = JOptionPane.showInputDialog(null,"Which worker do you want to delete?");
         if(operationsWorkerID != null)
         {
-            int askToViewWorker = JOptionPane.showConfirmDialog(null, "Do you want to view info about this worker before deleting?");
-            if(askToViewWorker == JOptionPane.YES_OPTION)
+            //Check if there is such an ID
+            if(DataBaseManager.checkIfIDExists(operationsWorkerID))
             {
-                OpenViewWorkerForm(operationsWorkerID);
-                ViewWorkerForm.instance.setDeleteButtonVisible(true);
-            }
-            else if(askToViewWorker == JOptionPane.NO_OPTION){
                 DeleteWorker(operationsWorkerID);
+            }else {
+                while (!DataBaseManager.checkIfIDExists(operationsWorkerID)) {
+                    //Check if there is such ID in database
+                    operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
+                    if (operationsWorkerID == null)
+                        return;
+                }
+
+                DeleteWorker(operationsWorkerID);
+
             }
 
         }
@@ -187,13 +223,21 @@ public class DataBaseGUI {
 
     public void DeleteWorker(String deleteID){
         //Call SQL command to delete a row with operationsWorkerID
-        DataBaseManager.deleteRowFromTheTable(deleteID);
+        int askToViewWorker = JOptionPane.showConfirmDialog(null, "Do you want to view info about this worker before deleting?");
+        if(askToViewWorker == JOptionPane.YES_OPTION)
+        {
+            OpenViewWorkerForm(operationsWorkerID);
+            ViewWorkerForm.instance.setDeleteButtonVisible(true);
+        }
+        else if(askToViewWorker == JOptionPane.NO_OPTION){
+            DataBaseManager.deleteRowFromTheTable(deleteID);
+        }
+
 
     }
 
     private void OpenViewWorkerForm(String viewID){
         ViewWorkerForm.instance.setDeleteButtonVisible(false);
-        ViewWorkerForm.instance.setTextLabels(viewID);
 
         //Set all labels with SQL form database
         DataBaseManager.viewRowFromTheTable(viewID,ViewWorkerForm.instance.GetLabelArray());

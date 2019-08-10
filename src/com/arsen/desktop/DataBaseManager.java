@@ -1,7 +1,9 @@
 package com.arsen.desktop;
 
-import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Document;
@@ -9,7 +11,6 @@ import com.itextpdf.text.Document;
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.*;
 
@@ -41,6 +42,7 @@ public class DataBaseManager {
 
     public static void addRowToTable(JTextField[] textFields)
     {
+        String dateFormat = "yyyy-MM-dd";
         Connection con = getConnection();
         try {
             DatabaseMetaData metaData = con.getMetaData();
@@ -49,24 +51,41 @@ public class DataBaseManager {
             String sql = "INSERT INTO `WORKERS` VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
 
+            String id = textFields[0].getText().replaceAll("\\s+","");
+
+            if(checkIfIDExists(id)) {
+                JOptionPane.showMessageDialog(null, "Worker with this ID already exists");
+                return;
+            }
+
 
             int i = 0;
             while (resultSet.next()){
                 String type = resultSet.getString("TYPE_NAME");
-                System.out.println(resultSet.getString("COLUMN_NAME"));
+                //System.out.println(resultSet.getString("COLUMN_NAME"));
 
                 switch(type){
                     case "INT":
-                        preparedStatement.setInt(i+1, Integer.parseInt(textFields[i].getText().replaceAll("\\s+","")));
+                            preparedStatement.setInt(i + 1, Integer.parseInt(textFields[i].getText().replaceAll("\\s+", "")));
                     break;
 
                     case "VARCHAR":
-                         preparedStatement.setString(i+1, textFields[i].getText());
+                        if(resultSet.getString("COLUMN_NAME").equals("Phone number")) {
+                            preparedStatement.setString(i + 1, textFields[i].getText().replaceAll("\\s+", ""));
+                        }
+                        preparedStatement.setString(i+1, textFields[i].getText().trim());
+
                     break;
 
                      case"DATE":
-                        preparedStatement.setDate(i+1, Date.valueOf(textFields[i].getText()));
-                    break;
+                         String dateToCheck = textFields[i].getText();
+                         if(DateValidator.isThisDateValid(dateToCheck,dateFormat))
+                         {
+                             preparedStatement.setDate(i + 1, Date.valueOf(textFields[i].getText()));
+                         }else{
+                             throw new Exception("Entered date is wrong, use yyyy-MM-dd format");
+                         }
+                     break;
 
                     case"DOUBLE":
                         preparedStatement.setDouble(i+1, Double.parseDouble(textFields[i].getText()));
@@ -77,27 +96,14 @@ public class DataBaseManager {
                 i++;
             }
 
-            /*
-            preparedStatement.setInt(1, Integer.parseInt(textFields[0].getText()));
-            preparedStatement.setString(2, textFields[1].getText());
-            preparedStatement.setString(3, textFields[2].getText());
-            preparedStatement.setString(4, textFields[3].getText());
-            preparedStatement.setDate(5, Date.valueOf(textFields[4].getText()));
-            preparedStatement.setString(6, textFields[5].getText());
-            preparedStatement.setString(7, textFields[6].getText());
-            preparedStatement.setInt(8, Integer.parseInt(textFields[7].getText()));
-            preparedStatement.setInt(9, Integer.parseInt(textFields[8].getText()));
-            preparedStatement.setString(10, textFields[9].getText());
-            preparedStatement.setDouble(11, Double.parseDouble(textFields[10].getText()));
-            preparedStatement.setDate(12, null);//Date.valueOf(textFields[11].getText()));
-            preparedStatement.setString(13, textFields[12].getText());
-            */
+
             preparedStatement.executeUpdate();
 
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Input data correctly");
+
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
 
     }
@@ -193,7 +199,7 @@ public class DataBaseManager {
                             formattedTextFields[i].setText(String.valueOf(resultSet.getInt(i + 1)));
                             break;
                         case "VARCHAR":
-                            formattedTextFields[i].setText(resultSet.getString(i + 1));
+                            formattedTextFields[i].setText(resultSet.getString(i + 1).trim());
                             break;
                         case "DATE":
                             Date currentDate = resultSet.getDate(i + 1);
@@ -202,7 +208,7 @@ public class DataBaseManager {
                             break;
                         case "DOUBLE":
                             formattedTextFields[i].setText(String.valueOf(resultSet.getDouble(i + 1)));
-                            System.out.println(String.valueOf(resultSet.getDouble(i + 1)));
+                            //System.out.println(String.valueOf(resultSet.getDouble(i + 1)));
                             break;
                         default:
                             System.out.println("Type error");
@@ -237,7 +243,7 @@ public class DataBaseManager {
                         break;
 
                     case "VARCHAR":
-                        preparedStatement.setString(i, formattedTextFields[i].getText());
+                        preparedStatement.setString(i, formattedTextFields[i].getText().trim());
                         break;
 
                     case"DATE":
@@ -264,7 +270,7 @@ public class DataBaseManager {
         }
     }
 
-    public static ResultSet getColumnTypes() throws SQLException
+    public static ResultSet getColumnsMetaData() throws SQLException
     {
         Connection con = getConnection();
         DatabaseMetaData metaData = con.getMetaData();
@@ -280,17 +286,19 @@ public class DataBaseManager {
         MaskFormatter formatter = null;
         try {
             formatter = new MaskFormatter(s);
+
         } catch (java.text.ParseException exc) {
             System.err.println("formatter is bad: " + exc.getMessage());
             System.exit(-1);
         }
+
         return formatter;
     }
 
 
     public static void SetMaskFormatters(JFormattedTextField[] formattedTextFields) throws SQLException {
         //String.repeat(int number of repeats of String)        Done
-        ResultSet resultSet = getColumnTypes();
+        ResultSet resultSet = getColumnsMetaData();
         int i = 0;
         while (resultSet.next())
         {
@@ -306,10 +314,18 @@ public class DataBaseManager {
                     formattedTextFields[i].setText("8888");
                     break;
                 case "VARCHAR":
-                    maskFormat = "*";
-                    //stringFormatter.setInvalidCharacters("123456789");
-                    formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
-                    formattedTextFields[i].setText("xxxxxxxxxxxxx");
+                    if(resultSet.getString("COLUMN_NAME").equals("Phone number"))
+                    {
+                        maskFormat = "#";
+                        formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
+                        formattedTextFields[i].setText("0123456");
+                    }
+                    else {
+                        maskFormat = "*";
+                        formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
+                        formattedTextFields[i].setText("xxxxxxxxxxxxx");
+                    }
+
                     break;
 
                 case"DATE":
@@ -332,30 +348,77 @@ public class DataBaseManager {
 
     public static void printPDF(String filePath) {
         try {
-        String fileName = filePath + "\\Report.pdf";
-        Connection conn = getConnection();
-        String sql = "SELECT * FROM WORKERS";
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        Document document = new Document(PageSize.A4.rotate());
+            String fileName = filePath + "\\Report.pdf";
 
-        PdfWriter.getInstance(document, new FileOutputStream(fileName));
-        document.open();
-        PdfPTable table = new PdfPTable(13);
-            resultSet.next();
-        while(resultSet.next()){
-            for(int i = 0; i<13; i++){
-                table.addCell(resultSet.getString(i+1));
+            Connection conn = getConnection();
+            String sql = "SELECT * FROM WORKERS";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
+            Document document = new Document(PageSize.A4.rotate());
+
+            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            ResultSet metaData = getColumnsMetaData();
+
+            document.open();
+
+
+            PdfPTable table = new PdfPTable(13);
+
+            table.setHeaderRows(1);
+            table.setWidthPercentage(105);
+
+            Font cellFont = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL);
+            Font headerFont = new Font(Font.FontFamily.HELVETICA, 13, Font.BOLD);
+
+            while(metaData.next())
+            {
+                table.addCell(new PdfPCell(new Phrase(metaData.getString("COLUMN_NAME"), headerFont)));
             }
-        }
 
-        document.add(table);
-        document.close();
-        } catch (Exception e) {
+
+            while(resultSet.next()){
+                for(int i = 0; i<13; i++){
+                    PdfPCell cell = new PdfPCell(new Phrase(resultSet.getString(i+1),cellFont));
+                    table.addCell(cell).setMinimumHeight(40);
+                }
+            }
+
+            document.add(table);
+
+
+            document.close();
+
+        }
+        catch (Exception e)
+        {
             System.out.println(e);
             e.printStackTrace();
         }
 
+    }
+
+    public static boolean checkIfIDExists(String idToCheck){
+        try {
+        Connection conn = getConnection();
+        String sql = "SELECT `ID` FROM `WORKERS`";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if(idToCheck == null){
+            return false;
+        }
+
+        while(resultSet.next()){
+            if(resultSet.getInt(1) == Integer.parseInt(idToCheck)){
+                System.out.println("Id found");
+                return true;
+            }
+        }
+            System.out.println("finished");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

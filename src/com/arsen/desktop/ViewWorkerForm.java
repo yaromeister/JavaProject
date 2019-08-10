@@ -65,7 +65,7 @@ public class ViewWorkerForm{
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null,"Gocha, mate(:");
-                DataBaseGUI.instance.DeleteWorker(DataBaseGUI.instance.getOperationsWorkerID());
+                DataBaseManager.deleteRowFromTheTable(DataBaseGUI.instance.getOperationsWorkerID());
             }
         });
     }
@@ -82,9 +82,6 @@ public class ViewWorkerForm{
         deleteButton.setVisible(bool);
     }
 
-    public void setTextLabels(String dataBaseKey){
-        //SQL command for retrieving data
-    }
 
     public void setDescription(String name, String lastName){
         Description.setText(name +" " + lastName + " info");
