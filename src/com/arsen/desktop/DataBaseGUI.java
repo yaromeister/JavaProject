@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class DataBaseGUI {
@@ -29,6 +31,8 @@ public class DataBaseGUI {
     private String operationsWorkerID;
     private String question;
     private static JFrame frame = new JFrame("Application");
+
+    Desktop desktop = Desktop.getDesktop();
 
 
     public DataBaseGUI() {
@@ -154,9 +158,23 @@ public class DataBaseGUI {
 
     private void PrintReport()
     {
-        final JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int returnValue = fc.showDialog(mainPanel,"Save here");
+        String path;
+
+        final JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnValue = chooser.showDialog(mainPanel,"Save here");
+        if(returnValue == JFileChooser.APPROVE_OPTION){
+            path = chooser.getSelectedFile().getAbsolutePath();
+            DataBaseManager.printPDF(path);
+            File file = new File(path + "\\Report.pdf");
+            try {
+                desktop.open(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
     public static void ChangeVisibility(JPanel oldPanel, JPanel newPanel)

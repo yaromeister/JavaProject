@@ -1,8 +1,16 @@
 package com.arsen.desktop;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Document;
+
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.*;
 
 
@@ -135,6 +143,7 @@ public class DataBaseManager {
                         {
                             case "INT":
                                 labels[i].setText(String.valueOf(resultSet.getInt(i + 1)));
+
                                 break;
                             case "VARCHAR":
                                 labels[i].setText(resultSet.getString(i + 1));
@@ -321,4 +330,32 @@ public class DataBaseManager {
         }
     }
 
+    public static void printPDF(String filePath) {
+        try {
+        String fileName = filePath + "\\Report.pdf";
+        Connection conn = getConnection();
+        String sql = "SELECT * FROM WORKERS";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        Document document = new Document(PageSize.A4.rotate());
+
+        PdfWriter.getInstance(document, new FileOutputStream(fileName));
+        document.open();
+        PdfPTable table = new PdfPTable(13);
+            resultSet.next();
+        while(resultSet.next()){
+            for(int i = 0; i<13; i++){
+                table.addCell(resultSet.getString(i+1));
+
+            }
+        }
+
+        document.add(table);
+        document.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+
+    }
 }
