@@ -48,14 +48,12 @@ public class ViewWorkerForm{
             roomNumberLabel, phoneLabel, emailLabel, salaryLabel, workingSinceLabel, notesLabel};
 
     public ViewWorkerForm(){
-        //Description.setText(AddWorkerForm.instance.getTextFieldByIndex(1).getText() + " " + AddWorkerForm.instance.getTextFieldByIndex(2).getText() + " info");
-
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
-                DataBaseGUI.instance.ChangeVisibility(viewWorkerPanel, DataBaseGUI.instance.GetMainPanel());
-                DataBaseGUI.instance.GetFrame().setContentPane(DataBaseGUI.instance.GetMainPanel());
+                DataBaseGUI.changeVisiblePanel(viewWorkerPanel, DataBaseGUI.instance.getMainPanel());
+                DataBaseGUI.getFrame().setContentPane(DataBaseGUI.instance.getMainPanel());
 
 
             }
@@ -70,11 +68,11 @@ public class ViewWorkerForm{
         });
     }
 
-    public JLabel[] GetLabelArray(){
+    public JLabel[] getLabelArray(){
         return labels;
     }
 
-    public JPanel GetPanel(){
+    public JPanel getPanel(){
         return viewWorkerPanel;
     }
 
@@ -84,7 +82,7 @@ public class ViewWorkerForm{
 
 
     public void setDescription(String name, String lastName){
-        Description.setText(name +" " + lastName + " info");
+        Description.setText(name + " " + lastName + " info");
     }
 }
 

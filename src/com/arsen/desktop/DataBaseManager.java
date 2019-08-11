@@ -25,7 +25,7 @@ public class DataBaseManager {
     private static final String PASS = "admin";
 
     // Day lenght in miliseconds, for fixing ResultSet.getDate() bug
-    private static long day = 86400000;
+    private static long day = 86300000;
 
 
     private static Connection getConnection(){
@@ -34,10 +34,19 @@ public class DataBaseManager {
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
             return conn;
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
             return null;
         }
 
+    }
+
+    private static ResultSet getColumnsMetaData() throws SQLException
+    {
+        Connection con = getConnection();
+        DatabaseMetaData metaData = con.getMetaData();
+        ResultSet resultSet = metaData.getColumns(null, null, "workers", null);
+
+        return resultSet;
     }
 
     public static void addRowToTable(JTextField[] textFields)
@@ -60,9 +69,9 @@ public class DataBaseManager {
 
 
             int i = 0;
+            //Chooses transformation of type according to column type in DB
             while (resultSet.next()){
                 String type = resultSet.getString("TYPE_NAME");
-                //System.out.println(resultSet.getString("COLUMN_NAME"));
 
                 switch(type){
                     case "INT":
@@ -96,9 +105,9 @@ public class DataBaseManager {
                 i++;
             }
 
-
             preparedStatement.executeUpdate();
 
+            JOptionPane.showMessageDialog(null, "Successfully added worker");
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -108,30 +117,11 @@ public class DataBaseManager {
 
     }
 
-    public static void deleteRowFromTheTable(String rowsID)
-    {
-        Connection conn = getConnection();
-        String sql = "DELETE FROM WORKERS " +
-                     "WHERE ID = ?";
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setInt(1,Integer.parseInt(rowsID));
-
-            preparedStatement.executeUpdate();
-
-            System.out.println("Successfully deleted");
-        } catch (SQLException e) {
-            System.out.println("Delete statement error!");
-            e.printStackTrace();
-        }
-    }
-
-    public static void viewRowFromTheTable(String rowID, JLabel[] labels)
+    public static void setFieldValuesFromDB(String rowID, JLabel[] labels)
     {
         Connection conn = getConnection();
         String sql = "SELECT * FROM WORKERS " +
-                     "WHERE ID = ?";
+                "WHERE ID = ?";
 
         PreparedStatement preparedStatement = null;
         try {
@@ -141,44 +131,47 @@ public class DataBaseManager {
 
             if(resultSet.next())
             {
+                //Dynamically reads column data type and transform data accordingly
                 for(int i =0; i<13; i++)
                 {
-                        String columnType = resultSet.getMetaData().getColumnTypeName(i + 1);
+                    String columnType = resultSet.getMetaData().getColumnTypeName(i + 1);
 
-                        switch (columnType)
-                        {
-                            case "INT":
-                                labels[i].setText(String.valueOf(resultSet.getInt(i + 1)));
+                    switch (columnType)
+                    {
+                        case "INT":
+                            labels[i].setText(String.valueOf(resultSet.getInt(i + 1)));
 
-                                break;
-                            case "VARCHAR":
-                                labels[i].setText(resultSet.getString(i + 1));
-                                break;
-                            case "DATE":
-                                Date currentDate = resultSet.getDate(i + 1);
-                                currentDate.setTime(currentDate.getTime()+day);
-                                labels[i].setText(currentDate.toString());
-                                break;
-                            case "DOUBLE":
-                                labels[i].setText(String.valueOf(resultSet.getDouble(i + 1)));
-                                break;
-                            default:
-                                System.out.println("Type error");
-                        }
+                            break;
+                        case "VARCHAR":
+                            labels[i].setText(resultSet.getString(i + 1));
+                            break;
+                        case "DATE":
+                            Date currentDate = resultSet.getDate(i + 1);
+                            currentDate.setTime(currentDate.getTime()+day);
+                            labels[i].setText(currentDate.toString());
+                            break;
+                        case "DOUBLE":
+                            labels[i].setText(String.valueOf(resultSet.getDouble(i + 1)));
+                            break;
+                        default:
+                            System.out.println("Type error");
                     }
+                }
             }
+
             ViewWorkerForm.instance.setDescription(labels[2].getText().replaceAll("\\s+",""), labels[1].getText().replaceAll("\\s+", ""));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
 
-    public static void viewRowFromTheTable(String rowID, JFormattedTextField[] formattedTextFields)
+    public static void setFieldValuesFromDB(String rowID, JFormattedTextField[] formattedTextFields)
     {
         Connection conn = getConnection();
         String sql = "SELECT * FROM WORKERS " +
-                     "WHERE ID = ?";
+                "WHERE ID = ?";
 
         PreparedStatement preparedStatement = null;
         try {
@@ -189,6 +182,7 @@ public class DataBaseManager {
 
             if(resultSet.next())
             {
+                //Dynamically reads column data type and transform data accordingly
                 for(int i =0; i<13; i++)
                 {
                     String columnType = resultSet.getMetaData().getColumnTypeName(i + 1);
@@ -208,34 +202,37 @@ public class DataBaseManager {
                             break;
                         case "DOUBLE":
                             formattedTextFields[i].setText(String.valueOf(resultSet.getDouble(i + 1)));
-                            //System.out.println(String.valueOf(resultSet.getDouble(i + 1)));
                             break;
                         default:
                             System.out.println("Type error");
                     }
                 }
             }
+            ViewWorkerForm.instance.setDescription(formattedTextFields[1].getText().replaceAll("\\s+",""), formattedTextFields[2].getText().replaceAll("\\s+", ""));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void editRowInTheTable(JFormattedTextField[] formattedTextFields, String editID){
+    public static void editRowInTheTable(JFormattedTextField[] formattedTextFields, String editID)
+    {
         Connection con = getConnection();
         try {
             DatabaseMetaData metaData = con.getMetaData();
             ResultSet resultSet = metaData.getColumns(null, null, "workers", null);
 
             String sql = "UPDATE `WORKERS` " +
-                         "SET `Last Name` = ?, `Name` = ?, `Patronum` = ?, `Date of birth` = ?, `Job` = ?, `Department` = ?, `Room number` = ?, `Phone number` = ?, `Email` = ?, `Salary` = ?, `Working since` = ?, `Notes` = ? WHERE ID = ?";
+                    "SET `Last Name` = ?, `Name` = ?, `Patronum` = ?, `Date of birth` = ?, `Job` = ?, `Department` = ?, `Room number` = ?, `Phone number` = ?, `Email` = ?, `Salary` = ?, `Working since` = ?, `Notes` = ? WHERE ID = ?";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
 
             int i = 1;
+
+            //skips first value because it's ID which we don't edit
             resultSet.next();
+
+            //Dynamically reads column data type and transform data accordingly
             while (resultSet.next()){
                 String type = resultSet.getString("TYPE_NAME");
-               // preparedStatement.setString(j-1, "`"+resultSet.getString("COLUMN_NAME")+"`");
-               System.out.println(i + " " + "`"+resultSet.getString("COLUMN_NAME")+"`");
 
                 switch(type){
                     case "INT":
@@ -258,11 +255,14 @@ public class DataBaseManager {
                         System.out.println("Type error");
                 }
                 i++;
-                //System.out.println(j);
             }
+
+            //sets id of a worker witch we will edit
             preparedStatement.setInt(i, Integer.parseInt(editID));
+
             preparedStatement.executeUpdate();
 
+            JOptionPane.showMessageDialog(null, "Successfully edited worker");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Input data correctly");
             System.out.println("Input data correctly");
@@ -270,19 +270,28 @@ public class DataBaseManager {
         }
     }
 
-    public static ResultSet getColumnsMetaData() throws SQLException
+    public static void deleteRowFromTheTable(String rowsID)
     {
-        Connection con = getConnection();
-        DatabaseMetaData metaData = con.getMetaData();
-        ResultSet resultSet = metaData.getColumns(null, null, "workers", null);
+        Connection conn = getConnection();
+        String sql = "DELETE FROM WORKERS " +
+                     "WHERE ID = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1,Integer.parseInt(rowsID));
 
-        return resultSet;
+            preparedStatement.executeUpdate();
 
-
+            JOptionPane.showMessageDialog(null, "Successfully deleted worker");
+        } catch (SQLException e) {
+            System.out.println("Delete statement error!");
+            e.printStackTrace();
+        }
     }
 
-
-    private static MaskFormatter maskFormatter(String s){
+    //Generate MaskFormatter using given template
+    private static MaskFormatter maskFormatter(String s)
+    {
         MaskFormatter formatter = null;
         try {
             formatter = new MaskFormatter(s);
@@ -295,58 +304,68 @@ public class DataBaseManager {
         return formatter;
     }
 
+    //Used to set restriction on input
+    public static void setMaskFormatters(JFormattedTextField[] formattedTextFields)
+    {
+        //Formatter Factory is the only way to set formatters after creation of JFormattedTextField(they were created automatically)
+        ResultSet resultSet = null;
+        try {
+            resultSet = getColumnsMetaData();
 
-    public static void SetMaskFormatters(JFormattedTextField[] formattedTextFields) throws SQLException {
-        //String.repeat(int number of repeats of String)        Done
-        ResultSet resultSet = getColumnsMetaData();
-        int i = 0;
-        while (resultSet.next())
-        {
-            String type = resultSet.getString("TYPE_NAME");
-            int columnSize = Integer.parseInt(resultSet.getString("COLUMN_SIZE"));
-            //System.out.println(columnSize);
-            String maskFormat;
+            int i = 0;
+            //Dynamically reads column data type and set formatters accordingly
+            while (resultSet.next())
+            {
+                String type = resultSet.getString("TYPE_NAME");
+                int columnSize = Integer.parseInt(resultSet.getString("COLUMN_SIZE"));
+                String maskFormat;
 
-            switch(type){
-                case "INT":
-                    maskFormat = "#";
-                    formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
-                    formattedTextFields[i].setText("8888");
-                    break;
-                case "VARCHAR":
-                    if(resultSet.getString("COLUMN_NAME").equals("Phone number"))
-                    {
+                switch(type){
+                    case "INT":
                         maskFormat = "#";
                         formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
-                        formattedTextFields[i].setText("0123456");
-                    }
-                    else {
+                        formattedTextFields[i].setText("8888");
+                        break;
+                    case "VARCHAR":
+                        //phone number is varchar in DB but only numbers should be inputed
+                        if(resultSet.getString("COLUMN_NAME").equals("Phone number"))
+                        {
+                            maskFormat = "#";
+                            formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
+                            formattedTextFields[i].setText("0123456");
+                        }
+                        else {
+                            maskFormat = "*";
+                            formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
+                            formattedTextFields[i].setText("xxxxxxxxxxxxx");
+                        }
+
+                        break;
+
+                    case"DATE":
+                        formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter("####-##-##")));
+                        formattedTextFields[i].setText("1111-11-11");
+                        break;
+                    case"DOUBLE":
+                        //to input '.' symbol you have to include all symbols and than allow only numbers and dot
                         maskFormat = "*";
-                        formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter(maskFormat.repeat(columnSize))));
-                        formattedTextFields[i].setText("xxxxxxxxxxxxx");
-                    }
-
-                    break;
-
-                case"DATE":
-                    formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(maskFormatter("####-##-##")));
-                    formattedTextFields[i].setText("1111-11-11");
-                    break;
-                case"DOUBLE":
-                    maskFormat = "*";
-                    MaskFormatter doubleFormatter = maskFormatter(maskFormat.repeat(columnSize));
-                    doubleFormatter.setValidCharacters("0123456789.");
-                    formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(doubleFormatter));
-                    formattedTextFields[i].setText("8888.88");
-                    break;
-                default:
-                    System.out.println("Type error");
+                        MaskFormatter doubleFormatter = maskFormatter(maskFormat.repeat(columnSize));
+                        doubleFormatter.setValidCharacters("0123456789.");
+                        formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(doubleFormatter));
+                        formattedTextFields[i].setText("8888.88");
+                        break;
+                    default:
+                        System.out.println("Type error");
+                }
+                i++;
             }
-            i++;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void printPDF(String filePath) {
+    public static void printPDF(String filePath)
+    {
         try {
             String fileName = filePath + "\\Report.pdf";
 
@@ -371,12 +390,13 @@ public class DataBaseManager {
             Font cellFont = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL);
             Font headerFont = new Font(Font.FontFamily.HELVETICA, 13, Font.BOLD);
 
+            //adds header
             while(metaData.next())
             {
                 table.addCell(new PdfPCell(new Phrase(metaData.getString("COLUMN_NAME"), headerFont)));
             }
 
-
+            //adds cells
             while(resultSet.next()){
                 for(int i = 0; i<13; i++){
                     PdfPCell cell = new PdfPCell(new Phrase(resultSet.getString(i+1),cellFont));
@@ -398,23 +418,25 @@ public class DataBaseManager {
 
     }
 
-    public static boolean checkIfIDExists(String idToCheck){
+    public static boolean checkIfIDExists(String idToCheck)
+    {
         try {
         Connection conn = getConnection();
         String sql = "SELECT `ID` FROM `WORKERS`";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
+
         if(idToCheck == null){
             return false;
         }
-
+        //Checks if entered value is the same as any value in ID column(first column)
         while(resultSet.next()){
             if(resultSet.getInt(1) == Integer.parseInt(idToCheck)){
-                System.out.println("Id found");
+                System.out.println("ID found");
                 return true;
             }
         }
-            System.out.println("finished");
+            System.out.println("ID check finished");
 
         } catch (SQLException e) {
             e.printStackTrace();

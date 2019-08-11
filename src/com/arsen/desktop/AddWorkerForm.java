@@ -1,21 +1,15 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.MaskFormatter;
 import java.lang.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class AddWorkerForm {
 
+    //Singleton
     public static AddWorkerForm instance = new AddWorkerForm();
 
-
-
-    private JPanel addWorkerPanel;
     //region Buttons and fields
     private JTextArea workerIDText;
     private JTextArea lastNameText;
@@ -67,11 +61,10 @@ public class AddWorkerForm {
     //private JFormattedTextField formattedTextField = new JFormattedTextField(maskFormatter("####"))
     //endregion
 
+    private JPanel addWorkerPanel;
 
-    private JTextArea[] textAreas = {workerIDText, lastNameText, workerNameText, patronumText, birthDayText, workerJobText, placeOfWorkText, roomNumberText, phoneNumberText, emailText, salaryText, workingSinceText, notesText};
     private JFormattedTextField[] formattedTextFields = {workerID, lastName, name, patronum, dateOfBirth,
-            job,placeOfWork,roomNumber,phone, email, salary, workingSince,
-            notes};
+            job,placeOfWork,roomNumber,phone, email, salary, workingSince, notes};
 
 
     public AddWorkerForm(){
@@ -79,8 +72,8 @@ public class AddWorkerForm {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
-                DataBaseGUI.instance.ChangeVisibility(addWorkerPanel, DataBaseGUI.instance.GetMainPanel());
-                DataBaseGUI.instance.GetFrame().setContentPane(DataBaseGUI.instance.GetMainPanel());
+                DataBaseGUI.changeVisiblePanel(addWorkerPanel, DataBaseGUI.instance.getMainPanel());
+                DataBaseGUI.getFrame().setContentPane(DataBaseGUI.instance.getMainPanel());
 
             }
         });
@@ -93,18 +86,13 @@ public class AddWorkerForm {
         });
     }
 
-    public JPanel GetPanel()
+    public JPanel getPanel()
     {
         return addWorkerPanel;
-    }
-
-    public JFormattedTextField getTextFieldByIndex(int index){
-        return formattedTextFields[index];
     }
 
     public JFormattedTextField[] getFormattedTextFields(){
         return formattedTextFields;
     }
-
 
 }

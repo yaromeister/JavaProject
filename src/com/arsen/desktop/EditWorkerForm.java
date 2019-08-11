@@ -9,6 +9,7 @@ public class EditWorkerForm {
     //Singleton
     public static EditWorkerForm instance = new EditWorkerForm();
 
+    //region Buttons and fields
     private JPanel editWorkerPanel;
     private JTextArea workerIDText;
     private JTextArea lastNameText;
@@ -40,9 +41,10 @@ public class EditWorkerForm {
     private JFormattedTextField salary;
     private JFormattedTextField workingSince;
     private JFormattedTextField notes;
+    //endregion
 
-    private JTextArea[] textAreas = {workerIDText, lastNameText, workerNameText, patronumText, birthDayText, workerJobText, placeOfWorkText, roomNumberText, phoneNumberText, emailText, salaryText, workingSinceText, notesText};
-    private JFormattedTextField[] formattedTextFieldsFields = {workerID, lastName,name, patronum,dateOfBirth,job,placeOfWork,roomNumber,phone, email, salary, workingSince, notes};
+    private JFormattedTextField[] formattedTextFieldsFields = {workerID, lastName,name, patronum, dateOfBirth,
+            job,placeOfWork,roomNumber,phone, email, salary, workingSince, notes};
 
 
     public EditWorkerForm(){
@@ -50,14 +52,12 @@ public class EditWorkerForm {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
-                //DataBaseGUI mainMenu = new DataBaseGUI();
-                DataBaseGUI.instance.ChangeVisibility(editWorkerPanel, DataBaseGUI.instance.GetMainPanel());
-                DataBaseGUI.instance.GetFrame().setContentPane(DataBaseGUI.instance.GetMainPanel());
+                DataBaseGUI.changeVisiblePanel(editWorkerPanel, DataBaseGUI.instance.getMainPanel());
+                DataBaseGUI.getFrame().setContentPane(DataBaseGUI.instance.getMainPanel());
                 for(int i =0; i<formattedTextFieldsFields.length; i++)
                 {
                     formattedTextFieldsFields[i].setText("");
                 }
-                //JOptionPane.showMessageDialog(null, textFields[9].getText());
 
             }
         });
@@ -71,7 +71,7 @@ public class EditWorkerForm {
         });
     }
 
-    public JPanel GetPanel(){
+    public JPanel getPanel(){
         return editWorkerPanel;
     }
 
