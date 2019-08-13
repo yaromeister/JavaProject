@@ -24,22 +24,7 @@ public class AddWorkerForm {
     private JTextArea salaryText;
     private JTextArea workingSinceText;
     private JTextArea notesText;
-    /*
-    private JTextField workerID;
-    private JTextField lastName;
-    private JTextField workerName;
-    private JTextField patronum;
-    private JTextField birthDay;
-    private JTextField workerJob;
-    private JTextField placeOfWork;
-    private JTextField roomNumber;
-    private JTextField phoneNumber;
-    private JTextField email;
-    private JTextField salary;
-    private JTextField workingSincess;
-    private JTextField notes;
 
-     */
     private JButton submitAddButton;
     private JButton backButton;
     private JPanel parentPanel;
@@ -58,7 +43,6 @@ public class AddWorkerForm {
     private JFormattedTextField salary;
     private JFormattedTextField workingSince;
     private JFormattedTextField notes;
-    //private JFormattedTextField formattedTextField = new JFormattedTextField(maskFormatter("####"))
     //endregion
 
     private JPanel addWorkerPanel;
