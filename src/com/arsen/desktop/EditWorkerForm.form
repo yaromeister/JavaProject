@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.arsen.desktop.EditWorkerForm">
+  <grid id="27dc6" binding="parentPanel" layout-manager="CardLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="650" height="700"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="91333" binding="editWorkerPanel" layout-manager="GridLayoutManager" row-count="16" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="15" left="30" bottom="15" right="30"/>
+        <constraints>
+          <card name="Card1"/>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+          <foreground color="-1"/>
+          <minimumSize width="650" height="700"/>
+          <preferredSize width="700" height="720"/>
+          <visible value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="c7625" class="javax.swing.JTextArea" binding="workerIDText">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Worker ID"/>
+            </properties>
+          </component>
+          <component id="bf3bc" class="javax.swing.JTextArea" binding="lastNameText">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Last Name"/>
+            </properties>
+          </component>
+          <component id="cacb5" class="javax.swing.JTextArea" binding="workerNameText">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Name"/>
+            </properties>
+          </component>
+          <component id="37ff0" class="javax.swing.JTextArea" binding="patronumText">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Patronum"/>
+            </properties>
+          </component>
+          <component id="b26c6" class="javax.swing.JTextArea" binding="birthDayText">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Date Of Birth"/>
+            </properties>
+          </component>
+          <component id="d0de8" class="javax.swing.JTextArea" binding="workerJobText">
+            <constraints>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Job"/>
+            </properties>
+          </component>
+          <component id="aa1db" class="javax.swing.JTextArea" binding="roomNumberText">
+            <constraints>
+              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Room Number"/>
+            </properties>
+          </component>
+          <component id="925e0" class="javax.swing.JTextArea" binding="phoneNumberText">
+            <constraints>
+              <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Phone"/>
+            </properties>
+          </component>
+          <component id="c5129" class="javax.swing.JTextArea" binding="emailText">
+            <constraints>
+              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Email"/>
+            </properties>
+          </component>
+          <component id="3ba6f" class="javax.swing.JTextArea" binding="salaryText">
+            <constraints>
+              <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Salary"/>
+            </properties>
+          </component>
+          <component id="94363" class="javax.swing.JTextArea" binding="workingSinceText">
+            <constraints>
+              <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Working Since"/>
+            </properties>
+          </component>
+          <component id="ab776" class="javax.swing.JTextArea" binding="notesText">
+            <constraints>
+              <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Notes"/>
+            </properties>
+          </component>
+          <component id="65eb6" class="javax.swing.JTextArea" binding="placeOfWorkText">
+            <constraints>
+              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="120" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusCycleRoot value="false"/>
+              <focusTraversalPolicyProvider value="false"/>
+              <font name="Courier New" size="16" style="1"/>
+              <foreground color="-1"/>
+              <inheritsPopupMenu value="false"/>
+              <lineWrap value="false"/>
+              <margin top="0" left="100" bottom="0" right="0"/>
+              <text value="Place Of Work"/>
+            </properties>
+          </component>
+          <component id="f5b9" class="javax.swing.JButton" binding="editButton">
+            <constraints>
+              <grid row="15" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <font name="Courier New" size="14" style="1"/>
+              <foreground color="-1"/>
+              <text value="Edit"/>
+            </properties>
+          </component>
+          <component id="e00cd" class="javax.swing.JTextArea" binding="Description">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="10" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="50"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+              <caretColor color="-1"/>
+              <font name="Courier New" size="24" style="1"/>
+              <foreground color="-16777216"/>
+              <text value="Input data and submit"/>
+            </properties>
+          </component>
+          <component id="e554f" class="javax.swing.JButton" binding="backButton">
+            <constraints>
+              <grid row="15" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-12961222"/>
+              <font name="Courier New" size="14" style="1"/>
+              <foreground color="-1"/>
+              <text value="Back"/>
+            </properties>
+          </component>
+          <vspacer id="69f22">
+            <constraints>
+              <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                <preferred-size width="-1" height="20"/>
+              </grid>
+            </constraints>
+          </vspacer>
+          <component id="eb686" class="javax.swing.JFormattedTextField" binding="workerID">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="6983e" class="javax.swing.JFormattedTextField" binding="lastName">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="53f63" class="javax.swing.JFormattedTextField" binding="name">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="16b2b" class="javax.swing.JFormattedTextField" binding="patronum">
+            <constraints>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="116ac" class="javax.swing.JFormattedTextField" binding="dateOfBirth">
+            <constraints>
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="6366" class="javax.swing.JFormattedTextField" binding="job">
+            <constraints>
+              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="4053c" class="javax.swing.JFormattedTextField" binding="placeOfWork">
+            <constraints>
+              <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="d0337" class="javax.swing.JFormattedTextField" binding="roomNumber">
+            <constraints>
+              <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="45ce5" class="javax.swing.JFormattedTextField" binding="phone">
+            <constraints>
+              <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="a8a79" class="javax.swing.JFormattedTextField" binding="email">
+            <constraints>
+              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="8f777" class="javax.swing.JFormattedTextField" binding="salary">
+            <constraints>
+              <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="a4146" class="javax.swing.JFormattedTextField" binding="workingSince">
+            <constraints>
+              <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+          <component id="c9dde" class="javax.swing.JFormattedTextField" binding="notes">
+            <constraints>
+              <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <focusLostBehavior value="0"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

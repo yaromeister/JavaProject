@@ -1,10 +1,18 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class DataBaseGUI {
+
+    //Singleton
+    public static DataBaseGUI instance = new DataBaseGUI();
+
+
     // region MainMenuVariables
     private JButton addWorkerButton;
     private JPanel parentPanel;
@@ -16,64 +24,23 @@ public class DataBaseGUI {
     private JTextArea chooseAnOptionTextArea;
     //endregion
 
-    //region AddWorkerVariables
-    private JPanel addWorkerPanel;
-    private JTextArea workerIDText;
-    private JTextArea lastNameText;
-    private JTextArea workerNameText;
-    private JTextArea patronumText;
-    private JTextArea birthDayText;
-    private JTextArea workerJobText;
-    private JTextArea placeOfWorkText;
-    private JTextArea roomNumberText;
-    private JTextArea phoneNumberText;
-    private JTextArea emailText;
-    private JTextArea salaryText;
-    private JTextArea firstDayOnJobText;
-    private JTextArea notesText;
-    private JTextField workerID;
-    private JTextField lastName;
-    private JTextField workerName;
-    private JTextField patronum;
-    private JTextField birthDay;
-    private JTextField workerJob;
-    private JTextField placeOfWork;
-    private JTextField roomNumber;
-    private JTextField phoneNumber;
-    private JTextField email;
-    private JTextField salary;
-    private JTextField firstDayOnJob;
-    private JTextField notes;
-    private JTextArea Description;
-    private JButton submitAddButton;
-    //endregion
-
-    Worker worker = new Worker();
-
-    JTextArea textAreas[] = {workerIDText, workerNameText, lastNameText, patronumText, birthDayText, workerJobText, placeOfWorkText, roomNumberText, phoneNumberText, emailText, salaryText, firstDayOnJobText, notesText};
-    JTextField textFields[] = {workerID, workerName,lastName,patronum,birthDay,workerJob,placeOfWork,roomNumber,phoneNumber, email, salary, firstDayOnJob, notes};
-
+    private String operationsWorkerID;
     private String question;
     private static JFrame frame = new JFrame("Application");
 
+    private Desktop desktop = Desktop.getDesktop();
 
-    public DataBaseGUI() {
+
+    public DataBaseGUI()
+    {
         addWorkerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                    //Button to Add Worker to a Data Base
                 question = "Do you really want to add Worker?";
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
-                if(dialogResult == JOptionPane.YES_OPTION){
-                    //JOptionPane.showMessageDialog(null,emailText.getText());
-                    VisibilityChange(mainPanel, addWorkerPanel);
-                    submitAddButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            AddWorker();
-                            JOptionPane.showMessageDialog(null, worker.GetMapKeyValue(emailText.getText()));
-                        }
-                    });
-
+                if(dialogResult == JOptionPane.YES_OPTION)
+                {
+                    openAddWorkerForm();
 
                 }
             }
@@ -83,9 +50,9 @@ public class DataBaseGUI {
             public void actionPerformed(ActionEvent e) {                    //Button to Outputs specified worker's data
                 question = "Do you really want to view Worker's info?";
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
-                if(dialogResult == JOptionPane.YES_OPTION){
-                    JOptionPane.showMessageDialog(null,"Do something");
-                    ViewWorker();
+                if(dialogResult == JOptionPane.YES_OPTION)
+                {
+                    openViewWorkerFormDialog();
                 }
             }
         });
@@ -94,9 +61,9 @@ public class DataBaseGUI {
             public void actionPerformed(ActionEvent e) {                    //Button to Edit specified worker's data
                 question = "Do you really want to edit Worker's info?";
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
-                if(dialogResult == JOptionPane.YES_OPTION){
-                    JOptionPane.showMessageDialog(null,"Do something");
-                    EditWorker();
+                if(dialogResult == JOptionPane.YES_OPTION)
+                {
+                    openEditWorkerFormDialog();
                 }
             }
         });
@@ -105,82 +72,198 @@ public class DataBaseGUI {
             @Override
             public void actionPerformed(ActionEvent e) {                    //Button to Delete specified worker from the Data Base
                 question = "Do you really want to delete Worker?";
-                int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
-                if(dialogResult == JOptionPane.YES_OPTION){
-                    JOptionPane.showMessageDialog(null,"Do something");
-                    DeleteWorker();
+
+                int firstDialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
+                if(firstDialogResult == JOptionPane.YES_OPTION)
+                {
+                    deleteWorkerDialog();
                 }
             }
         });
+
         printReportButton.addActionListener(new ActionListener() {          //Button to Prints report in table format(maybe will add PDF option)
             @Override
             public void actionPerformed(ActionEvent e) {
                 question = "Do you really want to print a Report?";
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
-                if(dialogResult == JOptionPane.YES_OPTION){
-                    JOptionPane.showMessageDialog(null,"Do something");
-                    PrintReport();
+                if(dialogResult == JOptionPane.YES_OPTION)
+                {
+                    printReport();
                 }
             }
         });
 
     }
 
-    private void AddWorker()
+    private void openAddWorkerForm()
     {
 
-        for(int i = 0; i<13; i++){
-            worker.SetMapKeyValue(textAreas[i].getText(), textFields[i].getText());
+        DataBaseManager.setMaskFormatters(AddWorkerForm.instance.getFormattedTextFields());
+
+        changeVisiblePanel(mainPanel, AddWorkerForm.instance.getPanel());
+        frame.setContentPane(AddWorkerForm.instance.getPanel());
+
+    }
+
+    private void openViewWorkerFormDialog()
+    {
+        operationsWorkerID = JOptionPane.showInputDialog(null,"Input ID of the worker you want to view");
+
+        if(operationsWorkerID != null)
+        {
+            if(DataBaseManager.checkIfIDExists(operationsWorkerID))
+            {
+                openViewWorkerForm(operationsWorkerID);
+            }else
+                {
+                    while (!DataBaseManager.checkIfIDExists(operationsWorkerID)) {
+                        operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
+                        if(operationsWorkerID == null)
+                            return;
+                    }
+                    openViewWorkerForm(operationsWorkerID);
+
+                }
+
         }
 
+    }
 
-        //Use textArea.getText() for index creation 'cause it returns at least some value that looks like a key
-        //Add text fields to list or array
-        //Set values using a loop
-        /*
-        SetAllNewValues(ListOfTextFields)
-        {
-            for(int i = 0; i<ListOfTextFields.Length && i < HashTable.Lenght; i++)
+    private void openEditWorkerFormDialog()
+    {
+        operationsWorkerID = JOptionPane.showInputDialog(null,"Input ID of the worker you want to edit");
+
+        if(operationsWorkerID != null) {
+            if(DataBaseManager.checkIfIDExists(operationsWorkerID))
             {
-                SetValue(i(like index of a HashTable),ListOfTextFields[i].getText());
+                openEditWorkerForm(operationsWorkerID);
+            }else
+            {
+                while (!DataBaseManager.checkIfIDExists(operationsWorkerID)) {
+                    //Check if there is such ID in database
+                    operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
+                    if(operationsWorkerID == null)
+                        return;
+                }
+
+                openEditWorkerForm(operationsWorkerID);
+
+            }
+
+        }
+    }
+
+    private void openEditWorkerForm(String operationsWorkerID)
+    {
+
+        DataBaseManager.setMaskFormatters(EditWorkerForm.instance.getFormattedFields());
+
+        DataBaseManager.setFieldValuesFromDB(operationsWorkerID,EditWorkerForm.instance.getFormattedFields());
+
+        changeVisiblePanel(mainPanel, EditWorkerForm.instance.getPanel());
+        frame.setContentPane(EditWorkerForm.instance.getPanel());
+    }
+
+    private void deleteWorkerDialog()
+    {
+        operationsWorkerID = JOptionPane.showInputDialog(null,"Which worker do you want to delete?");
+        if(operationsWorkerID != null)
+        {
+            if(DataBaseManager.checkIfIDExists(operationsWorkerID))
+            {
+                deleteWorker(operationsWorkerID);
+            }else {
+                while (!DataBaseManager.checkIfIDExists(operationsWorkerID)) {
+                    //Check if there is such ID in database
+                    operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
+                    if (operationsWorkerID == null)
+                        return;
+                }
+
+                deleteWorker(operationsWorkerID);
+
+            }
+
+        }
+
+    }
+
+    private void printReport()
+    {
+        String path;
+        //creating file chooser window which allows us to choose directories
+        final JFileChooser chooser = new JFileChooser();
+
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnValue = chooser.showDialog(mainPanel,"Save here");
+
+        if(returnValue == JFileChooser.APPROVE_OPTION){
+            path = chooser.getSelectedFile().getAbsolutePath();
+            DataBaseManager.printPDF(path);
+            File file = new File(path + "\\Report.pdf");
+            try {
+                desktop.open(file);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-         */
-
     }
 
-    private void ViewWorker()
-    {
-
-    }
-
-    private void EditWorker()
-    {
-
-    }
-
-    private void DeleteWorker()
-    {
-
-    }
-
-    private void PrintReport()
-    {
-
-    }
-
-    private void VisibilityChange(JPanel oldPanel, JPanel newPanel)
+    public static void changeVisiblePanel(JPanel oldPanel, JPanel newPanel)
     {
         oldPanel.setVisible(false);
         newPanel.setVisible(true);
         frame.setSize(newPanel.getPreferredSize());
-        //typo
+
+        //multiclass change
+    }
+
+    private void deleteWorker(String deleteID)
+    {
+
+        int askToViewWorker = JOptionPane.showConfirmDialog(null, "Do you want to view info about this worker before deleting?");
+
+        if(askToViewWorker == JOptionPane.YES_OPTION)
+        {
+            openViewWorkerForm(operationsWorkerID);
+            ViewWorkerForm.instance.setDeleteButtonVisible(true);
+        }
+        else if(askToViewWorker == JOptionPane.NO_OPTION){
+            DataBaseManager.deleteRowFromTheTable(deleteID);
+        }
+
 
     }
 
+    private void openViewWorkerForm(String viewID)
+    {
+        ViewWorkerForm.instance.setDeleteButtonVisible(false);
+
+        DataBaseManager.setFieldValuesFromDB(viewID,ViewWorkerForm.instance.getLabelArray());
+
+
+        changeVisiblePanel(mainPanel, ViewWorkerForm.instance.getPanel());
+        frame.setContentPane(ViewWorkerForm.instance.getPanel());
+    }
+
+
+    public static JFrame getFrame(){
+        return frame;
+    }
+
+
+    public JPanel getMainPanel(){
+        return mainPanel;
+    }
+
+    public String getOperationsWorkerID(){
+        return operationsWorkerID;
+    }
+
+
 
     public static void main(String[] args) {
-        frame.setContentPane(new DataBaseGUI().parentPanel);
+        frame.setContentPane(instance.parentPanel);
         frame.setLocation(500,50);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
