@@ -7,8 +7,8 @@ public class AllTableModel extends AbstractTableModel {
     private String[] columnNames;
 
     public AllTableModel(){
-        data = DataBaseManager.getColumnDataDB();
-        columnNames = DataBaseManager.getColumnNamesDB();
+        data = TableFiller.getColumnDataDB();
+        columnNames = TableFiller.getColumnNamesDB();
     }
 
     public void refreshTableData(Object[][] data){

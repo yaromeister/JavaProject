@@ -1,5 +1,8 @@
 package com.arsen.desktop;
 
+import com.arsen.desktop.printer.Printer;
+import com.arsen.desktop.validators.IDValidator;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -27,15 +30,13 @@ public class Table {
 
     private Desktop desktop = Desktop.getDesktop();
 
-    private String[] columnNames = {};
-    private Object[][] data = {};
     private JTable table;
 
     private AllTableModel model = new AllTableModel();
     private TableRowSorter sorter = new TableRowSorter<AllTableModel>(model);
 
 
-    public Table(){
+    private Table(){
 
         searchField.setUI(new HintTextFieldUI("Search", true, Color.LIGHT_GRAY));
 
@@ -47,7 +48,7 @@ public class Table {
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION)
                 {
-                    openAddWorkerForm();
+                    AddWorkerForm.openAddWorkerForm();
 
                 }
             }
@@ -59,7 +60,7 @@ public class Table {
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION)
                 {
-                    openEditWorkerFormDialog();
+                    EditWorkerForm.openEditWorkerFormDialog();
 
                 }
             }
@@ -83,72 +84,26 @@ public class Table {
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION)
                 {
-                    printReport();
+                    openFileChooser();
                 }
             }
         });
 
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
-                SearchEngine.filter(Table.instance.getSearchField(),sorter);
+                SearchEngine.filter(getSearchField(),sorter);
 
             }
 
             public void removeUpdate(DocumentEvent e) {
-                SearchEngine.filter(Table.instance.getSearchField(),sorter);
+                SearchEngine.filter(getSearchField(),sorter);
             }
 
             public void insertUpdate(DocumentEvent e) {
-                SearchEngine.filter(Table.instance.getSearchField(),sorter);
+                SearchEngine.filter(getSearchField(),sorter);
             }
 
         });
-    }
-
-    private void openAddWorkerForm()
-    {
-
-        DataBaseManager.setMaskFormatters(AddWorkerForm.instance.getFormattedTextFields());
-
-        changeVisiblePanel(parentPanel, AddWorkerForm.instance.getPanel());
-        frame.setContentPane(AddWorkerForm.instance.getPanel());
-
-    }
-    private void openEditWorkerFormDialog()
-    {
-        operationsWorkerID = JOptionPane.showInputDialog(null,"Input ID of the worker you want to edit");
-
-        if(operationsWorkerID != null) {
-            if(DataBaseManager.checkIfIDExists(operationsWorkerID))
-            {
-
-                openEditWorkerForm(operationsWorkerID);
-            }else
-            {
-                while (!DataBaseManager.checkIfIDExists(operationsWorkerID)) {
-                    //Check if there is such ID in database
-                    operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
-                    if(operationsWorkerID == null)
-                        return;
-                }
-
-
-                openEditWorkerForm(operationsWorkerID);
-
-            }
-
-        }
-    }
-
-    private void openEditWorkerForm(String operationsWorkerID)
-    {
-
-        DataBaseManager.setMaskFormatters(EditWorkerForm.instance.getFormattedFields());
-
-        DataBaseManager.setFieldValuesFromDB(operationsWorkerID,EditWorkerForm.instance.getFormattedFields());
-
-        changeVisiblePanel(parentPanel, EditWorkerForm.instance.getPanel());
-        frame.setContentPane(EditWorkerForm.instance.getPanel());
     }
 
     private void deleteWorkerDialog()
@@ -156,11 +111,11 @@ public class Table {
         operationsWorkerID = JOptionPane.showInputDialog(null,"Which worker do you want to delete?");
         if(operationsWorkerID != null)
         {
-            if(DataBaseManager.checkIfIDExists(operationsWorkerID))
+            if(IDValidator.checkIfIDExists(operationsWorkerID))
             {
                 deleteWorker(operationsWorkerID);
             }else {
-                while (!DataBaseManager.checkIfIDExists(operationsWorkerID)) {
+                while (!IDValidator.checkIfIDExists(operationsWorkerID)) {
                     //Check if there is such ID in database
                     operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
                     if (operationsWorkerID == null)
@@ -175,7 +130,12 @@ public class Table {
 
     }
 
-    private void printReport()
+    private void deleteWorker(String deleteID)
+    {
+        DataBaseManager.deleteRowFromTheTable(deleteID);
+    }
+
+    private void openFileChooser()
     {
         String path;
         //creating file chooser window which allows us to choose directories
@@ -204,21 +164,10 @@ public class Table {
         //multiclass change
     }
 
-    private void deleteWorker(String deleteID)
-    {
-            DataBaseManager.deleteRowFromTheTable(deleteID);
-    }
-
 
     public static JFrame getFrame(){
         return frame;
     }
-
-
-    public String getOperationsWorkerID(){
-        return operationsWorkerID;
-    }
-
 
 
     public JPanel getParentPanel(){
@@ -229,11 +178,11 @@ public class Table {
         return table;
     }
 
-    public JFormattedTextField getSearchField(){
+    private JFormattedTextField getSearchField(){
         return searchField;
     }
 
-    public void setTable(){
+    private void setTable(){
 
         table = new JTable(model);
         table.setRowSorter(sorter);
@@ -258,9 +207,5 @@ public class Table {
         frame.pack();
         frame.setVisible(true);
 
-
-
     }
-
-
 }

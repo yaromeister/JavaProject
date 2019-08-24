@@ -1,5 +1,7 @@
 package com.arsen.desktop;
 
+import com.arsen.desktop.validators.IDValidator;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -44,6 +46,8 @@ public class EditWorkerForm {
     private JFormattedTextField notes;
     //endregion
 
+    private static String operationsWorkerID;
+
     private JFormattedTextField[] formattedTextFields = {lastName,name, patronum, dateOfBirth,
             job,placeOfWork,roomNumber,phone, email, salary, workingSince, notes};
 
@@ -68,8 +72,8 @@ public class EditWorkerForm {
             public void actionPerformed(ActionEvent e) {
                 //Alter workers info in data base
                 //Take info from textFields, ID from inputID
-                DataBaseManager.editRowInTheTable(formattedTextFields,Table.instance.getOperationsWorkerID());
-                new AllTableModel().refreshTableData(DataBaseManager.getColumnDataDB());
+                DataBaseManager.editRowInTheTable(formattedTextFields,getOperationsWorkerID());
+                new AllTableModel().refreshTableData(TableFiller.getColumnDataDB());
             }
         });
 
@@ -104,13 +108,50 @@ public class EditWorkerForm {
         });
     }
 
-    public JPanel getPanel(){
-        return editWorkerPanel;
+    private JPanel getParentPanel(){
+        return parentPanel;
     }
 
-    public JFormattedTextField[] getFormattedFields(){
+    private JFormattedTextField[] getFormattedFields(){
         return formattedTextFields;
     }
 
+    private String getOperationsWorkerID(){return operationsWorkerID;}
 
+    public static void openEditWorkerFormDialog()
+    {
+         operationsWorkerID = JOptionPane.showInputDialog(null,"Input ID of the worker you want to edit");
+
+        if(operationsWorkerID != null) {
+            if(IDValidator.checkIfIDExists(operationsWorkerID))
+            {
+
+                openEditWorkerForm(operationsWorkerID);
+            }else
+            {
+                while (!IDValidator.checkIfIDExists(operationsWorkerID)) {
+                    //Check if there is such ID in database
+                    operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
+                    if(operationsWorkerID == null)
+                        return;
+                }
+
+
+                openEditWorkerForm(operationsWorkerID);
+
+            }
+
+        }
+    }
+
+    private static void openEditWorkerForm(String operationsWorkerID)
+    {
+
+        CustomMaskFormatter.setMaskFormatters(instance.getFormattedFields());
+
+        DataBaseManager.setFieldValuesFromDB(operationsWorkerID,instance.getFormattedFields());
+
+        Table.changeVisiblePanel(Table.instance.getParentPanel(), instance.getParentPanel());
+        Table.getFrame().setContentPane(instance.getParentPanel());
+    }
 }

@@ -1,4 +1,4 @@
-package com.arsen.desktop;
+package com.arsen.desktop.exceptions;
 
 public class DateFormatException extends Exception {
     public DateFormatException() {

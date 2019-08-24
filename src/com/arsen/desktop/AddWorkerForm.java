@@ -12,6 +12,7 @@ public class AddWorkerForm {
     //Singleton
     public static AddWorkerForm instance = new AddWorkerForm();
 
+    //region Fields
     private JTextArea lastNameText;
     private JTextArea workerNameText;
     private JTextArea patronumText;
@@ -28,6 +29,7 @@ public class AddWorkerForm {
     private JButton submitAddButton;
     private JButton backButton;
     private JPanel parentPanel;
+    private JPanel addWorkerPanel;
     private JTextArea Description;
     private JFormattedTextField name;
     private JFormattedTextField dateOfBirth;
@@ -43,13 +45,10 @@ public class AddWorkerForm {
     private JFormattedTextField notes;
     //endregion
 
-    private JPanel addWorkerPanel;
-
     private JFormattedTextField[] formattedTextFields = {lastName, name, patronum, dateOfBirth,
             job,placeOfWork,roomNumber,phone, email, salary, workingSince, notes};
 
-
-    public AddWorkerForm(){
+    private AddWorkerForm(){
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -98,13 +97,22 @@ public class AddWorkerForm {
         });
     }
 
-    public JPanel getPanel()
+    private JPanel getParentPanel()
     {
-        return addWorkerPanel;
+        return parentPanel;
     }
 
-    public JFormattedTextField[] getFormattedTextFields(){
+    private JFormattedTextField[] getFormattedTextFields(){
         return formattedTextFields;
+    }
+
+    public static void openAddWorkerForm()
+    {
+        CustomMaskFormatter.setMaskFormatters(instance.getFormattedTextFields());
+
+        Table.changeVisiblePanel(Table.instance.getParentPanel(), instance.getParentPanel());
+        Table.getFrame().setContentPane(AddWorkerForm.instance.getParentPanel());
+
     }
 
 }
