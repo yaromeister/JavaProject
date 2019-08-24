@@ -1,6 +1,8 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.lang.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,8 +12,6 @@ public class AddWorkerForm {
     //Singleton
     public static AddWorkerForm instance = new AddWorkerForm();
 
-    //region Buttons and fields
-    private JTextArea workerIDText;
     private JTextArea lastNameText;
     private JTextArea workerNameText;
     private JTextArea patronumText;
@@ -29,12 +29,10 @@ public class AddWorkerForm {
     private JButton backButton;
     private JPanel parentPanel;
     private JTextArea Description;
-    private JFormattedTextField formattedTextField;
     private JFormattedTextField name;
     private JFormattedTextField dateOfBirth;
     private JFormattedTextField job;
     private JFormattedTextField phone;
-    private JFormattedTextField workerID;
     private JFormattedTextField lastName;
     private JFormattedTextField patronum;
     private JFormattedTextField placeOfWork;
@@ -47,7 +45,7 @@ public class AddWorkerForm {
 
     private JPanel addWorkerPanel;
 
-    private JFormattedTextField[] formattedTextFields = {workerID, lastName, name, patronum, dateOfBirth,
+    private JFormattedTextField[] formattedTextFields = {lastName, name, patronum, dateOfBirth,
             job,placeOfWork,roomNumber,phone, email, salary, workingSince, notes};
 
 
@@ -56,8 +54,8 @@ public class AddWorkerForm {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
-                DataBaseGUI.changeVisiblePanel(addWorkerPanel, DataBaseGUI.instance.getMainPanel());
-                DataBaseGUI.getFrame().setContentPane(DataBaseGUI.instance.getMainPanel());
+                Table.changeVisiblePanel(addWorkerPanel, Table.instance.getParentPanel());
+                Table.getFrame().setContentPane(Table.instance.getParentPanel());
 
             }
         });
@@ -67,6 +65,36 @@ public class AddWorkerForm {
                 //SQL command to add a new row to the table
                 DataBaseManager.addRowToTable(formattedTextFields);
             }
+        });
+
+        dateOfBirth.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                AutoDash.putDash(dateOfBirth);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                AutoDash.putDash(dateOfBirth);
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                AutoDash.putDash(dateOfBirth);
+            }
+
+        });
+
+        workingSince.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                AutoDash.putDash(workingSince);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                AutoDash.putDash(workingSince);
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                AutoDash.putDash(workingSince);
+            }
+
         });
     }
 

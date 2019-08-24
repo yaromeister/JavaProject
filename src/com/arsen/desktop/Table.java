@@ -1,30 +1,25 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class DataBaseGUI {
+public class Table {
+    public static Table instance = new Table();
 
-    //Singleton
-    public static DataBaseGUI instance = new DataBaseGUI();
-
-
-    // region MainMenuVariables
-    private JButton addWorkerButton;
     private JPanel parentPanel;
-    private JButton viewWorkerButton;
-    private JButton editWorkerButton;
-    private JButton deleteWorkerButton;
+    private JScrollPane scrollPane;
+    private JButton addButton;
+    private JButton editButton;
+    private JButton deleteButton;
     private JButton printReportButton;
-    private JPanel mainPanel;
-    private JTextArea chooseAnOptionTextArea;
-    //endregion
+    private JFormattedTextField searchField;
 
     private String operationsWorkerID;
     private String question;
@@ -32,13 +27,22 @@ public class DataBaseGUI {
 
     private Desktop desktop = Desktop.getDesktop();
 
+    private String[] columnNames = {};
+    private Object[][] data = {};
+    private JTable table;
 
-    public DataBaseGUI()
-    {
+    private AllTableModel model = new AllTableModel();
+    private TableRowSorter sorter = new TableRowSorter<AllTableModel>(model);
 
-        addWorkerButton.addActionListener(new ActionListener() {
+
+    public Table(){
+
+        searchField.setUI(new HintTextFieldUI("Search", true, Color.LIGHT_GRAY));
+
+        addButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {                    //Button to Add Worker to a Data Base
+            public void actionPerformed(ActionEvent e) {
+
                 question = "Do you really want to add Worker?";
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION)
@@ -48,32 +52,21 @@ public class DataBaseGUI {
                 }
             }
         });
-        viewWorkerButton.addActionListener(new ActionListener() {
+        editButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {                    //Button to Outputs specified worker's data
-                question = "Do you really want to view Worker's info?";
-                int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
-                if(dialogResult == JOptionPane.YES_OPTION)
-                {
-                    openViewWorkerFormDialog();
-                }
-            }
-        });
-        editWorkerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {                    //Button to Edit specified worker's data
-                question = "Do you really want to edit Worker's info?";
+            public void actionPerformed(ActionEvent e) {
+                question = "Do you really want to edit Worker?";
                 int dialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.YES_OPTION)
                 {
                     openEditWorkerFormDialog();
+
                 }
             }
         });
-
-        deleteWorkerButton.addActionListener(new ActionListener() {
+        deleteButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {                    //Button to Delete specified worker from the Data Base
+            public void actionPerformed(ActionEvent e) {
                 question = "Do you really want to delete Worker?";
 
                 int firstDialogResult = JOptionPane.showConfirmDialog(null, question, "Warning", JOptionPane.YES_NO_OPTION);
@@ -83,8 +76,7 @@ public class DataBaseGUI {
                 }
             }
         });
-
-        printReportButton.addActionListener(new ActionListener() {          //Button to Prints report in table format(maybe will add PDF option)
+        printReportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 question = "Do you really want to print a Report?";
@@ -96,6 +88,21 @@ public class DataBaseGUI {
             }
         });
 
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                SearchEngine.filter(Table.instance.getSearchField(),sorter);
+
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                SearchEngine.filter(Table.instance.getSearchField(),sorter);
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                SearchEngine.filter(Table.instance.getSearchField(),sorter);
+            }
+
+        });
     }
 
     private void openAddWorkerForm()
@@ -103,35 +110,10 @@ public class DataBaseGUI {
 
         DataBaseManager.setMaskFormatters(AddWorkerForm.instance.getFormattedTextFields());
 
-        changeVisiblePanel(mainPanel, AddWorkerForm.instance.getPanel());
+        changeVisiblePanel(parentPanel, AddWorkerForm.instance.getPanel());
         frame.setContentPane(AddWorkerForm.instance.getPanel());
 
     }
-
-    private void openViewWorkerFormDialog()
-    {
-        operationsWorkerID = JOptionPane.showInputDialog(null,"Input ID of the worker you want to view");
-
-        if(operationsWorkerID != null)
-        {
-            if(DataBaseManager.checkIfIDExists(operationsWorkerID))
-            {
-                openViewWorkerForm(operationsWorkerID);
-            }else
-                {
-                    while (!DataBaseManager.checkIfIDExists(operationsWorkerID)) {
-                        operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
-                        if(operationsWorkerID == null)
-                            return;
-                    }
-                    openViewWorkerForm(operationsWorkerID);
-
-                }
-
-        }
-
-    }
-
     private void openEditWorkerFormDialog()
     {
         operationsWorkerID = JOptionPane.showInputDialog(null,"Input ID of the worker you want to edit");
@@ -139,6 +121,7 @@ public class DataBaseGUI {
         if(operationsWorkerID != null) {
             if(DataBaseManager.checkIfIDExists(operationsWorkerID))
             {
+
                 openEditWorkerForm(operationsWorkerID);
             }else
             {
@@ -148,6 +131,7 @@ public class DataBaseGUI {
                     if(operationsWorkerID == null)
                         return;
                 }
+
 
                 openEditWorkerForm(operationsWorkerID);
 
@@ -163,7 +147,7 @@ public class DataBaseGUI {
 
         DataBaseManager.setFieldValuesFromDB(operationsWorkerID,EditWorkerForm.instance.getFormattedFields());
 
-        changeVisiblePanel(mainPanel, EditWorkerForm.instance.getPanel());
+        changeVisiblePanel(parentPanel, EditWorkerForm.instance.getPanel());
         frame.setContentPane(EditWorkerForm.instance.getPanel());
     }
 
@@ -198,11 +182,11 @@ public class DataBaseGUI {
         final JFileChooser chooser = new JFileChooser();
 
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int returnValue = chooser.showDialog(mainPanel,"Save here");
+        int returnValue = chooser.showDialog(parentPanel,"Save here");
 
         if(returnValue == JFileChooser.APPROVE_OPTION){
             path = chooser.getSelectedFile().getAbsolutePath();
-            DataBaseManager.printPDF(path);
+            Printer.printPDF(path);
             File file = new File(path + "\\Report.pdf");
             try {
                 desktop.open(file);
@@ -222,30 +206,7 @@ public class DataBaseGUI {
 
     private void deleteWorker(String deleteID)
     {
-
-        int askToViewWorker = JOptionPane.showConfirmDialog(null, "Do you want to view info about this worker before deleting?");
-
-        if(askToViewWorker == JOptionPane.YES_OPTION)
-        {
-            openViewWorkerForm(operationsWorkerID);
-            ViewWorkerForm.instance.setDeleteButtonVisible(true);
-        }
-        else if(askToViewWorker == JOptionPane.NO_OPTION){
             DataBaseManager.deleteRowFromTheTable(deleteID);
-        }
-
-
-    }
-
-    private void openViewWorkerForm(String viewID)
-    {
-        ViewWorkerForm.instance.setDeleteButtonVisible(false);
-
-        DataBaseManager.setFieldValuesFromDB(viewID,ViewWorkerForm.instance.getLabelArray());
-
-
-        changeVisiblePanel(mainPanel, ViewWorkerForm.instance.getPanel());
-        frame.setContentPane(ViewWorkerForm.instance.getPanel());
     }
 
 
@@ -254,25 +215,52 @@ public class DataBaseGUI {
     }
 
 
-    public JPanel getMainPanel(){
-        return mainPanel;
-    }
-
     public String getOperationsWorkerID(){
         return operationsWorkerID;
     }
 
 
 
+    public JPanel getParentPanel(){
+        return parentPanel;
+    }
+
+    public JTable getTable(){
+        return table;
+    }
+
+    public JFormattedTextField getSearchField(){
+        return searchField;
+    }
+
+    public void setTable(){
+
+        table = new JTable(model);
+        table.setRowSorter(sorter);
+        table.setPreferredScrollableViewportSize(new Dimension(700, 250));
+        table.setFillsViewportHeight(true);
+        table.setRowHeight(30);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        parentPanel.add(scrollPane);
+        parentPanel.revalidate();
+        parentPanel.repaint();
+
+
+    }
+
+
     public static void main(String[] args) {
         Table.instance.setTable();
-        frame.setContentPane(Table.instance.getParentPanel());
-        //frame.setContentPane(instance.parentPanel);
+        frame.setContentPane(instance.parentPanel);
         frame.setLocation(500,50);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
+
+
     }
+
 
 }
