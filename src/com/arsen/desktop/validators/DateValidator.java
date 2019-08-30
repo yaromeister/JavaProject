@@ -1,4 +1,4 @@
-package com.arsen.desktop;
+package com.arsen.desktop.validators;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,7 +18,6 @@ public class DateValidator {
         try {
             //if not valid, it will throw ParseException
             Date date = sdf.parse(dateToValidate);
-
 
         } catch (ParseException e) {
 

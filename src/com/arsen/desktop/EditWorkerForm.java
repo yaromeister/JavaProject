@@ -1,6 +1,10 @@
 package com.arsen.desktop;
 
+import com.arsen.desktop.validators.IDValidator;
+
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,7 +15,6 @@ public class EditWorkerForm {
 
     //region Buttons and fields
     private JPanel editWorkerPanel;
-    private JTextArea workerIDText;
     private JTextArea lastNameText;
     private JTextArea workerNameText;
     private JTextArea patronumText;
@@ -43,20 +46,23 @@ public class EditWorkerForm {
     private JFormattedTextField notes;
     //endregion
 
-    private JFormattedTextField[] formattedTextFieldsFields = {workerID, lastName,name, patronum, dateOfBirth,
+    private static String operationsWorkerID;
+
+    private JFormattedTextField[] formattedTextFields = {lastName,name, patronum, dateOfBirth,
             job,placeOfWork,roomNumber,phone, email, salary, workingSince, notes};
 
 
     public EditWorkerForm(){
 
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
-                DataBaseGUI.changeVisiblePanel(editWorkerPanel, DataBaseGUI.instance.getMainPanel());
-                DataBaseGUI.getFrame().setContentPane(DataBaseGUI.instance.getMainPanel());
-                for(int i =0; i<formattedTextFieldsFields.length; i++)
+                Table.changeVisiblePanel(editWorkerPanel, Table.instance.getParentPanel());
+                Table.getFrame().setContentPane(Table.instance.getParentPanel());
+                for(int i = 0; i< formattedTextFields.length; i++)
                 {
-                    formattedTextFieldsFields[i].setText("");
+                    formattedTextFields[i].setText("");
                 }
 
             }
@@ -66,18 +72,86 @@ public class EditWorkerForm {
             public void actionPerformed(ActionEvent e) {
                 //Alter workers info in data base
                 //Take info from textFields, ID from inputID
-                DataBaseManager.editRowInTheTable(formattedTextFieldsFields,DataBaseGUI.instance.getOperationsWorkerID());
+                DataBaseManager.editRowInTheTable(formattedTextFields,getOperationsWorkerID());
+                new AllTableModel().refreshTableData(TableFiller.getColumnDataDB());
             }
+        });
+
+        dateOfBirth.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                AutoDash.putDash(dateOfBirth);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                AutoDash.putDash(dateOfBirth);
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                AutoDash.putDash(dateOfBirth);
+            }
+
+        });
+
+        workingSince.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                AutoDash.putDash(workingSince);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                AutoDash.putDash(workingSince);
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                AutoDash.putDash(workingSince);
+            }
+
         });
     }
 
-    public JPanel getPanel(){
-        return editWorkerPanel;
+    private JPanel getParentPanel(){
+        return parentPanel;
     }
 
-    public JFormattedTextField[] getFormattedFields(){
-        return formattedTextFieldsFields;
+    private JFormattedTextField[] getFormattedFields(){
+        return formattedTextFields;
     }
 
+    private String getOperationsWorkerID(){return operationsWorkerID;}
 
+    public static void openEditWorkerFormDialog()
+    {
+         operationsWorkerID = JOptionPane.showInputDialog(null,"Input ID of the worker you want to edit");
+
+        if(operationsWorkerID != null) {
+            if(IDValidator.checkIfIDExists(operationsWorkerID))
+            {
+
+                openEditWorkerForm(operationsWorkerID);
+            }else
+            {
+                while (!IDValidator.checkIfIDExists(operationsWorkerID)) {
+                    //Check if there is such ID in database
+                    operationsWorkerID = JOptionPane.showInputDialog(null, "There is no worker with such an ID, please try another one");
+                    if(operationsWorkerID == null)
+                        return;
+                }
+
+
+                openEditWorkerForm(operationsWorkerID);
+
+            }
+
+        }
+    }
+
+    private static void openEditWorkerForm(String operationsWorkerID)
+    {
+
+        CustomMaskFormatter.setMaskFormatters(instance.getFormattedFields());
+
+        DataBaseManager.setFieldValuesFromDB(operationsWorkerID,instance.getFormattedFields());
+
+        Table.changeVisiblePanel(Table.instance.getParentPanel(), instance.getParentPanel());
+        Table.getFrame().setContentPane(instance.getParentPanel());
+    }
 }

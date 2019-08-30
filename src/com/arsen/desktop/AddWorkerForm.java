@@ -1,6 +1,8 @@
 package com.arsen.desktop;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.lang.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,8 +12,7 @@ public class AddWorkerForm {
     //Singleton
     public static AddWorkerForm instance = new AddWorkerForm();
 
-    //region Buttons and fields
-    private JTextArea workerIDText;
+    //region Fields
     private JTextArea lastNameText;
     private JTextArea workerNameText;
     private JTextArea patronumText;
@@ -28,13 +29,12 @@ public class AddWorkerForm {
     private JButton submitAddButton;
     private JButton backButton;
     private JPanel parentPanel;
+    private JPanel addWorkerPanel;
     private JTextArea Description;
-    private JFormattedTextField formattedTextField;
     private JFormattedTextField name;
     private JFormattedTextField dateOfBirth;
     private JFormattedTextField job;
     private JFormattedTextField phone;
-    private JFormattedTextField workerID;
     private JFormattedTextField lastName;
     private JFormattedTextField patronum;
     private JFormattedTextField placeOfWork;
@@ -45,19 +45,16 @@ public class AddWorkerForm {
     private JFormattedTextField notes;
     //endregion
 
-    private JPanel addWorkerPanel;
-
-    private JFormattedTextField[] formattedTextFields = {workerID, lastName, name, patronum, dateOfBirth,
+    private JFormattedTextField[] formattedTextFields = {lastName, name, patronum, dateOfBirth,
             job,placeOfWork,roomNumber,phone, email, salary, workingSince, notes};
 
-
-    public AddWorkerForm(){
+    private AddWorkerForm(){
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
-                DataBaseGUI.changeVisiblePanel(addWorkerPanel, DataBaseGUI.instance.getMainPanel());
-                DataBaseGUI.getFrame().setContentPane(DataBaseGUI.instance.getMainPanel());
+                Table.changeVisiblePanel(addWorkerPanel, Table.instance.getParentPanel());
+                Table.getFrame().setContentPane(Table.instance.getParentPanel());
 
             }
         });
@@ -68,15 +65,54 @@ public class AddWorkerForm {
                 DataBaseManager.addRowToTable(formattedTextFields);
             }
         });
+
+        dateOfBirth.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                AutoDash.putDash(dateOfBirth);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                AutoDash.putDash(dateOfBirth);
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                AutoDash.putDash(dateOfBirth);
+            }
+
+        });
+
+        workingSince.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                AutoDash.putDash(workingSince);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                AutoDash.putDash(workingSince);
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                AutoDash.putDash(workingSince);
+            }
+
+        });
     }
 
-    public JPanel getPanel()
+    private JPanel getParentPanel()
     {
-        return addWorkerPanel;
+        return parentPanel;
     }
 
-    public JFormattedTextField[] getFormattedTextFields(){
+    private JFormattedTextField[] getFormattedTextFields(){
         return formattedTextFields;
+    }
+
+    public static void openAddWorkerForm()
+    {
+        CustomMaskFormatter.setMaskFormatters(instance.getFormattedTextFields());
+
+        Table.changeVisiblePanel(Table.instance.getParentPanel(), instance.getParentPanel());
+        Table.getFrame().setContentPane(AddWorkerForm.instance.getParentPanel());
+
     }
 
 }
