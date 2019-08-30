@@ -15,7 +15,7 @@ public class DataBaseManager {
         try {
             metaDataSet = MetaDataManager.getMetaData();
 
-            String sql = "INSERT INTO `WORKERS` VALUES(0,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO workers(`Last Name`, Name, Patronum, `Date of birth`, Job, Department, `Room number`, `Phone number`, Email, Salary, `Working Since`, Notes) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
             preparedStatement = conn.prepareStatement(sql);
 
             //Chooses transformation of type according to column type in DB

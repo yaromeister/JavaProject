@@ -40,7 +40,7 @@ public class TableFiller {
         PreparedStatement preparedStatement = null;
 
         try {
-            String sql = "SELECT * FROM WORKERS ORDER BY ID";
+            String sql = "SELECT Id,`Last Name`, Name, Patronum, `Date of birth`, Job, Department, `Room number`, `Phone number`, Email, Salary, `Working Since`, Notes FROM WORKERS ORDER BY ID";
             preparedStatement = conn.prepareStatement(sql);
 
             ResultSet numberOfRowsSet = preparedStatement.executeQuery();
@@ -54,8 +54,16 @@ public class TableFiller {
             int index = 0;
             while(resultSet.next()){
                 for(int i = 0; i<13; i++){
-                    data[index][i] = resultSet.getString(i+1);
-                }
+                    if(i == 0){
+                        data[index][i] = Integer.parseInt(resultSet.getString(i+1));
+                    }else if(i == 7){
+                        data[index][i] = Integer.parseInt(resultSet.getString(i+1));
+                    }else if(i == 10){
+                        data[index][i] = Double.valueOf(resultSet.getString(i+1));
+                    }else {
+                        data[index][i] = resultSet.getString(i+1);
+                    }
+                    }
                 index++;
             }
             System.out.println("Data changed");

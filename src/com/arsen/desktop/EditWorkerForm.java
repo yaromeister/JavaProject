@@ -58,8 +58,8 @@ public class EditWorkerForm {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
-                Table.changeVisiblePanel(editWorkerPanel, Table.instance.getParentPanel());
-                Table.getFrame().setContentPane(Table.instance.getParentPanel());
+                Main.changeVisiblePanel(editWorkerPanel, Table.instance.getParentPanel());
+                Main.getFrame().setContentPane(Table.instance.getParentPanel());
                 for(int i = 0; i< formattedTextFields.length; i++)
                 {
                     formattedTextFields[i].setText("");
@@ -151,7 +151,7 @@ public class EditWorkerForm {
 
         DataBaseManager.setFieldValuesFromDB(operationsWorkerID,instance.getFormattedFields());
 
-        Table.changeVisiblePanel(Table.instance.getParentPanel(), instance.getParentPanel());
-        Table.getFrame().setContentPane(instance.getParentPanel());
+        Main.changeVisiblePanel(Table.instance.getParentPanel(), instance.getParentPanel());
+        Main.getFrame().setContentPane(instance.getParentPanel());
     }
 }

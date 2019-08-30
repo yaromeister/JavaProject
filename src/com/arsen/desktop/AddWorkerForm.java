@@ -53,8 +53,8 @@ public class AddWorkerForm {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {                        //Back button
-                Table.changeVisiblePanel(addWorkerPanel, Table.instance.getParentPanel());
-                Table.getFrame().setContentPane(Table.instance.getParentPanel());
+                Main.changeVisiblePanel(addWorkerPanel, Table.instance.getParentPanel());
+                Main.getFrame().setContentPane(Table.instance.getParentPanel());
 
             }
         });
@@ -108,10 +108,13 @@ public class AddWorkerForm {
 
     public static void openAddWorkerForm()
     {
+
         CustomMaskFormatter.setMaskFormatters(instance.getFormattedTextFields());
 
-        Table.changeVisiblePanel(Table.instance.getParentPanel(), instance.getParentPanel());
-        Table.getFrame().setContentPane(AddWorkerForm.instance.getParentPanel());
+        Main.changeVisiblePanel(Table.instance.getParentPanel(), instance.getParentPanel());
+        Main.getFrame().setContentPane(AddWorkerForm.instance.getParentPanel());
+        instance.dateOfBirth.setText("");
+        instance.workingSince.setText("");
 
     }
 

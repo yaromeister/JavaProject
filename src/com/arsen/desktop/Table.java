@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 
 public class Table {
     public static Table instance = new Table();
@@ -23,10 +24,13 @@ public class Table {
     private JButton deleteButton;
     private JButton printReportButton;
     private JFormattedTextField searchField;
+    private JPanel northPanel;
+    private JFormattedTextField maxVal;
+    private JFormattedTextField minVal;
 
     private String operationsWorkerID;
     private String question;
-    private static JFrame frame = new JFrame("Application");
+
 
     private Desktop desktop = Desktop.getDesktop();
 
@@ -104,6 +108,9 @@ public class Table {
             }
 
         });
+
+        //BoolFilter.set(comboBox, boolPanel, minVal, maxVal);
+
     }
 
     private void deleteWorkerDialog()
@@ -156,20 +163,6 @@ public class Table {
         }
     }
 
-    public static void changeVisiblePanel(JPanel oldPanel, JPanel newPanel)
-    {
-        oldPanel.setVisible(false);
-        newPanel.setVisible(true);
-        frame.setSize(newPanel.getPreferredSize());
-        //multiclass change
-    }
-
-
-    public static JFrame getFrame(){
-        return frame;
-    }
-
-
     public JPanel getParentPanel(){
         return parentPanel;
     }
@@ -182,7 +175,7 @@ public class Table {
         return searchField;
     }
 
-    private void setTable(){
+    public void setTable(){
 
         table = new JTable(model);
         table.setRowSorter(sorter);
@@ -190,22 +183,12 @@ public class Table {
         table.setFillsViewportHeight(true);
         table.setRowHeight(30);
 
+
         JScrollPane scrollPane = new JScrollPane(table);
         parentPanel.add(scrollPane);
         parentPanel.revalidate();
         parentPanel.repaint();
 
-
     }
 
-
-    public static void main(String[] args) {
-        Table.instance.setTable();
-        frame.setContentPane(instance.parentPanel);
-        frame.setLocation(500,50);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-
-    }
 }
