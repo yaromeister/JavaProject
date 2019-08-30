@@ -54,7 +54,6 @@ public class CustomMaskFormatter {
 
                     case"DATE":
                         formattedTextFields[i].setFormatterFactory(new DefaultFormatterFactory(CustomMaskFormatter.createMaskFormatter("####*##*##")));
-                        //formattedTextFields[i].setText("1111-11-11");
                         formattedTextFields[i].setUI(new HintTextFieldUI("yyyy-MM-dd", true, Color.LIGHT_GRAY));
 
                         break;

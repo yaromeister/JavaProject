@@ -40,4 +40,11 @@ public class AllTableModel extends AbstractTableModel {
     public String getColumnName(int col) {
         return columnNames[col];
     }
-}
+
+    @Override
+    public Class getColumnClass(int c) {
+        return getValueAt(0, c).getClass();
+    }
+
+};
+
